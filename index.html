@@ -27,8 +27,7 @@
             <input type="text" id="input-mae" placeholder="Nome da Mãe" class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-lg text-sm">
             
             <label class="block text-[10px] text-slate-500 uppercase font-bold">Data de Nascimento</label>
-<!-- Mudamos de type="date" para type="text" -->
-<input type="text" id="input-nascimento" placeholder="DD/MM/AAAA" maxlength="10" class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-lg text-sm">
+            <input type="text" id="input-nascimento" placeholder="DD/MM/AAAA" maxlength="10" class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-lg text-sm">
 
             <div class="grid grid-cols-2 gap-4">
                 <input type="text" id="input-whatsapp" placeholder="(96) 99999-9999" maxlength="15" required class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-lg text-sm">
@@ -82,20 +81,14 @@
             e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
         });
 
-        // Máscara de Data (DD/MM/AAAA)
-document.getElementById("input-nascimento").addEventListener("input", function (e) {
-    let v = e.target.value.replace(/\D/g, ''); // Remove tudo que não é número
-    if (v.length > 8) v = v.slice(0, 8); // Limita a 8 dígitos
-    
-    // Aplica a máscara
-    if (v.length >= 5) {
-        e.target.value = v.replace(/(\d{2})(\d{2})(\d{1,4})/, '$1/$2/$3');
-    } else if (v.length >= 3) {
-        e.target.value = v.replace(/(\d{2})(\d{1,2})/, '$1/$2');
-    } else {
-        e.target.value = v;
-    }
-});
+        // Máscara de Data
+        document.getElementById("input-nascimento").addEventListener("input", function (e) {
+            let v = e.target.value.replace(/\D/g, '');
+            if (v.length > 8) v = v.slice(0, 8);
+            if (v.length >= 5) e.target.value = v.replace(/(\d{2})(\d{2})(\d{1,4})/, '$1/$2/$3');
+            else if (v.length >= 3) e.target.value = v.replace(/(\d{2})(\d{1,2})/, '$1/$2');
+            else e.target.value = v;
+        });
 
         // Preencher bairros
         Object.keys(mapaDados).forEach(bairro => {
@@ -105,7 +98,6 @@ document.getElementById("input-nascimento").addEventListener("input", function (
             selectBairro.appendChild(opt);
         });
 
-        // Filtrar escolas
         selectBairro.addEventListener("change", () => {
             const bairro = selectBairro.value;
             selectEscola.innerHTML = '<option value="">Selecione uma escola...</option>';
@@ -119,26 +111,33 @@ document.getElementById("input-nascimento").addEventListener("input", function (
             }
         });
 
-        // Inicialização Supabase
+        // Supabase
         const supabaseClient = supabase.createClient("https://giwnfttgradamcdbmceg.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdpd25mdHRncmFkYW1jZGJtY2VnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI0MTAzMTcsImV4cCI6MjA5Nzk4NjMxN30.Du5QNQ4K_ImVEdOhmJPR8SIktwsxKn5vpvp53tMH3Rs");
 
         document.getElementById("form-cadastro").addEventListener("submit", async (e) => {
             e.preventDefault();
             const btn = document.getElementById("btn-submit");
             btn.textContent = "Enviando...";
-           // Localize onde você monta o objeto 'dados' e altere para:
-const dados = {
-    bairro: selectBairro.value,
-    escola: selectEscola.value,
-    lider: document.getElementById("input-lider").value.trim() || '---',
-    nome: document.getElementById("input-nome").value.trim(),
-    nome_mae: document.getElementById("input-mae").value.trim() || '---',     // Alterado para nome_mae
-    data_nascimento: document.getElementById("input-nascimento").value || null, // Alterado para data_nascimento
-    whatsapp: document.getElementById("input-whatsapp").value.trim(),
-    transporte: document.getElementById("input-transporte").value,
-    instagram: document.getElementById("input-instagram").value.trim() || '---',
-    facebook: document.getElementById("input-facebook").value.trim() || '---'
-};
+
+            const dataDigitada = document.getElementById("input-nascimento").value;
+            let dataFormatada = null;
+            if (dataDigitada && dataDigitada.length === 10) {
+                const p = dataDigitada.split('/');
+                dataFormatada = `${p[2]}-${p[1]}-${p[0]}`;
+            }
+
+            const dados = {
+                bairro: selectBairro.value,
+                escola: selectEscola.value,
+                lider: document.getElementById("input-lider").value.trim() || '---',
+                nome: document.getElementById("input-nome").value.trim(),
+                nome_mae: document.getElementById("input-mae").value.trim() || '---',
+                data_nascimento: dataFormatada,
+                whatsapp: document.getElementById("input-whatsapp").value.trim(),
+                transporte: document.getElementById("input-transporte").value,
+                instagram: document.getElementById("input-instagram").value.trim() || '---',
+                facebook: document.getElementById("input-facebook").value.trim() || '---'
+            };
             
             const { error } = await supabaseClient.from('cadastros_votos').insert([dados]);
             
