@@ -3,101 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Novo Cadastro - Zona Sul</title>
+    <title>Novo Cadastro - Zona Norte e Sul</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <style>
+        /* Essas variáveis abaixo exibirão caixinhas de cor no VS Code com a extensão "Color Highlight" */
+        :root {
+            --azul-marinho-escuro: #050d27; /* Equivale ao blue-950 */
+            --azul-marinho-medio: #0432b3;  /* Equivale ao blue-900 */
+            --azul-botao: #0441c5;          /* Equivale ao blue-600 */
+            --cinza-fundo-input: #050d27;   /* Equivale ao slate-950 */
+            --texto-principal: #ffffff;
+        }
+    </style>
 </head>
-<body class="bg-slate-950 p-4 md:p-10 text-slate-100 font-sans">
+<body class="bg-[var(--azul-marinho-escuro)] p-4 md:p-10 text-[var(--texto-principal)] font-sans">
 
-    <div class="max-w-lg mx-auto bg-slate-900 p-6 rounded-xl border border-slate-800 shadow-xl">
+    <div class="max-w-lg mx-auto bg-[var(--azul-marinho-medio)] p-6 rounded-xl border border-slate-800 shadow-xl">
         <h2 class="text-2xl font-bold text-white mb-6 border-b border-slate-800 pb-3">Novo Cadastro</h2>
         
         <form id="form-cadastro" class="space-y-4">
             <div class="grid grid-cols-2 gap-4">
-                <select id="input-bairro" required class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-lg text-sm text-white focus:border-blue-500 outline-none">
+                <select id="input-bairro" required class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm text-white focus:border-blue-500 outline-none">
                     <option value="">Selecione um bairro...</option>
                 </select>
-                <select id="input-escola" required class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-lg text-sm text-white focus:border-blue-500 outline-none">
+                <select id="input-escola" required class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm text-white focus:border-blue-500 outline-none">
                     <option value="">Selecione uma escola...</option>
                 </select>
             </div>
 
-            <input type="text" id="input-lider" placeholder="Líder" class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-lg text-sm">
-            <input type="text" id="input-nome" placeholder="Nome Completo" required class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-lg text-sm">
-            <input type="text" id="input-mae" placeholder="Nome da Mãe" class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-lg text-sm">
+            <input type="text" id="input-lider" placeholder="Líder" class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
+            <input type="text" id="input-nome" placeholder="Nome Completo" required class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
+            <input type="text" id="input-mae" placeholder="Nome da Mãe" class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
             
-            <label class="block text-[10px] text-slate-500 uppercase font-bold">Data de Nascimento</label>
-            <input type="text" id="input-nascimento" placeholder="DD/MM/AAAA" maxlength="10" class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-lg text-sm">
+            <label class="block text-[10px] text-white uppercase font-bold">Data de Nascimento</label>
+            <input type="text" id="input-nascimento" placeholder="DD/MM/AAAA" maxlength="10" class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
 
             <div class="grid grid-cols-2 gap-4">
-                <input type="text" id="input-whatsapp" placeholder="(96) 99999-9999" maxlength="15" required class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-lg text-sm">
-                
-                <select id="input-transporte" class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-lg text-sm">
+                <input type="text" id="input-whatsapp" placeholder="(96) 99999-9999" maxlength="15" required class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
+                <select id="input-transporte" class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
                     <option value="Não">Sem Transporte</option>
                     <option value="Carro">Carro</option>
                     <option value="Moto">Moto</option>
                 </select>
             </div>
 
-            <input type="text" id="input-instagram" placeholder="Instagram (@usuario)" class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-lg text-sm">
-            <input type="text" id="input-facebook" placeholder="Facebook (nome ou link)" class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-lg text-sm">
+            <input type="text" id="input-instagram" placeholder="Instagram (@usuario)" class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
+            <input type="text" id="input-facebook" placeholder="Facebook (nome ou link)" class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
 
-            <button type="submit" id="btn-submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg transition shadow-lg mt-4">
+            <button type="submit" id="btn-submit" class="w-full bg-[var(--azul-botao)] hover:bg-blue-500 text-white font-bold py-3 rounded-lg transition shadow-lg mt-4">
                 Enviar Cadastro
             </button>
         </form>
     </div>
 
     <script>
-        const mapaDados = {
-            "UNIVERSIDADE": [{ nome: "NEUZONA" }, { nome: "UNIFAP" }],
-            "ZERÃO": [{ nome: "ANA MARIA DA SILVA" }, { nome: "ANTÔNIO MESSIAS" }, { nome: "NANCI NINA COSTA" }, { nome: "ANTÔNIO CASTRO" }],
-            "NOVO BURITIZAL": [{ nome: "ELITA NUNES MELO" }, { nome: "RAIMUNDO ALENCAR" }, { nome: "ANA LUIZA DE SOUZA" }],
-            "BURITIZAL": [{ nome: "EUNICE PICANÇO" }, { nome: "CARMELITA DO CARMO" }, { nome: "SEBASTIANA LENIR" }, { nome: "MÁRIO QUIRINO" }, { nome: "COELHO NETO" }, { nome: "CECÍLIA PINTO" }, { nome: "RORAIMA" }, { nome: "ARACY MONT'ALVERNE" }, { nome: "CEPA - CENTRO E. DO AP" }, { nome: "GONÇALVES DIAS" }],
-            "CUBA DE ASFALTO": [{ nome: "REINALDO DAMASCENO" }],
-            "MUCA": [{ nome: "PARAÍSO DAS ACÁCIAS" }, { nome: "LAURO CHAVES" }, { nome: "ESFORÇO POPULAR" }],
-            "PEDRINHAS": [{ nome: "MARIA DE NAZARÉ" }, { nome: "RAIMUNDA VIRGOLINO" }],
-            "JARDIM EQUATORIAL": [{ nome: "WILSON MALCHER" }],
-            "BEIROL": [{ nome: "ZOLITO D. JESUS NUNES" }, { nome: "PROF. ROBERTO - CENAP" }],
-            "NOVA ESPERANÇA": [{ nome: "JOSEFA JUCILEIDE" }],
-            "CONGÓS": [{ nome: "IRINEU DA GAMA PAZ" }, { nome: "NILTON BALIEIRO" }, { nome: "BENIGNA MOREIRA" }],
-            "MARABAIXO": [{ nome: "RAIMUNDA GUEDES" }, { nome: "NILTON BALIEIRO" }, { nome: "IRMÃ CARMELA B." }],
-            "CABRALZINHO": [{ nome: "SEST/SENAT" }, { nome: "MARIA DO SOCORRO A." }],
-            "SANTA INÊS": [{ nome: "ANTÔNIO BARBOSA" }, { nome: "SANTA INÊS" }],
-            "TREM": [{ nome: "SANTINA RIOLI" }, { nome: "AMAPÁ" }, { nome: "ALEXANDRE V. TAVARES" }, { nome: "HILDEMAR MAIA" }, { nome: "JOSÉ FIRMO" }],
-            "CENTRO": [{ nome: "GRAZIELA REIS" }, { nome: "GABRIEL DE ALMEIDA C." }, { nome: "PROFESSORA GUITA" }, { nome: "ANTÔNIO CORDEIRO P." }, { nome: "GUANABARA" }, { nome: "UEAP" }],
-            "SANTA RITA": [{ nome: "LUCIMAR DEL CASTILHO" }, { nome: "TIRADENTES" }, { nome: "MEU PÉ DE LARANJA" }, { nome: "PREDICANDA LOPES" }, { nome: "JOSÉ DE ANCHIETA" }, { nome: "DOM ARISTIDES" }, { nome: "COARACY NUNES" }, { nome: "ARACY NASCIMENTO" }],
-            "FAZENDINHA": [{ nome: "JOSÉ DO PATROCÍNIO" }, { nome: "CAETANO DIAS TOMÁS" }, { nome: "PROFª JACINTA MARIA" }, { nome: "CACILDA FERREIRA V." }, { nome: "IVANHOÉ GONÇALVES" }, { nome: "MARIA ANGÉLICA P." }],
-            "IGARAPÉ DA FORTALEZA": [{ nome: "PROFª MARGARIDA R." }],
-            "CORAÇÃO": [{ nome: "E.E.E.F. GOIÁS" }]
-        };
+       const mapaDados = {
+    // --- ZONA SUL ---
+    "BEIROL": [{ nome: "ZOLITO D. JESUS NUNES" }, { nome: "PROF. ROBERTO - CENAP" }],
+    "BURITIZAL": [{ nome: "EUNICE PICANÇO" }, { nome: "CARMELITA DO CARMO" }, { nome: "SEBASTIANA LENIR" }, { nome: "MÁRIO QUIRINO" }, { nome: "COELHO NETO" }, { nome: "CECÍLIA PINTO" }, { nome: "RORAIMA" }, { nome: "ARACY MONT'ALVERNE" }, { nome: "CEPA - CENTRO E. DO AP" }, { nome: "GONÇALVES DIAS" }],
+    "CABRALZINHO": [{ nome: "SEST/SENAT" }, { nome: "MARIA DO SOCORRO A." }],
+    "CENTRO": [{ nome: "GRAZIELA REIS" }, { nome: "GABRIEL DE ALMEIDA C." }, { nome: "PROFESSORA GUITA" }, { nome: "ANTÔNIO CORDEIRO P." }, { nome: "GUANABARA" }, { nome: "UEAP" }],
+    "CONGÓS": [{ nome: "IRINEU DA GAMA PAZ" }, { nome: "NILTON BALIEIRO" }, { nome: "BENIGNA MOREIRA" }],
+    "CORAÇÃO": [{ nome: "E.E.E.F. GOIÁS" }],
+    "CUBA DE ASFALTO": [{ nome: "REINALDO DAMASCENO" }],
+    "FAZENDINHA": [{ nome: "JOSÉ DO PATROCÍNIO" }, { nome: "CAETANO DIAS TOMÁS" }, { nome: "PROFª JACINTA MARIA" }, { nome: "CACILDA FERREIRA V." }, { nome: "IVANHOÉ GONÇALVES" }, { nome: "MARIA ANGÉLICA P." }],
+    "IGARAPÉ DA FORTALEZA": [{ nome: "PROFª MARGARIDA R." }],
+    "JARDIM EQUATORIAL": [{ nome: "WILSON MALCHER" }],
+    "MARABAIXO": [{ nome: "RAIMUNDA GUEDES" }, { nome: "NILTON BALIEIRO" }, { nome: "IRMÃ CARMELA B." }],
+    "MUCA": [{ nome: "PARAÍSO DAS ACÁCIAS" }, { nome: "LAURO CHAVES" }, { nome: "ESFORÇO POPULAR" }],
+    "NOVA ESPERANÇA": [{ nome: "JOSEFA JUCILEIDE" }],
+    "NOVO BURITIZAL": [{ nome: "ELITA NUNES MELO" }, { nome: "RAIMUNDO ALENCAR" }, { nome: "ANA LUIZA DE SOUZA" }],
+    "PEDRINHAS": [{ nome: "MARIA DE NAZARÉ" }, { nome: "RAIMUNDA VIRGOLINO" }],
+    "SANTA INÊS": [{ nome: "ANTÔNIO BARBOSA" }, { nome: "SANTA INÊS" }],
+    "SANTA RITA": [{ nome: "LUCIMAR DEL CASTILHO" }, { nome: "TIRADENTES" }, { nome: "MEU PÉ DE LARANJA" }, { nome: "PREDICANDA LOPES" }, { nome: "JOSÉ DE ANCHIETA" }, { nome: "DOM ARISTIDES" }, { nome: "COARACY NUNES" }, { nome: "ARACY NASCIMENTO" }],
+    "TREM": [{ nome: "SANTINA RIOLI" }, { nome: "AMAPÁ" }, { nome: "ALEXANDRE V. TAVARES" }, { nome: "HILDEMAR MAIA" }, { nome: "JOSÉ FIRMO" }],
+    "UNIVERSIDADE": [{ nome: "NEUZONA" }, { nome: "UNIFAP" }],
+    "ZERÃO": [{ nome: "ANA MARIA DA SILVA" }, { nome: "ANTÔNIO MESSIAS" }, { nome: "NANCI NINA COSTA" }, { nome: "ANTÔNIO CASTRO" }],
 
+    // --- ZONA NORTE ---
+    "BONÉ AZUL": [{ nome: "ONEIDE LIMA" }],
+    "BRASIL NOVO": [{ nome: "ESCOLA BRASIL NOVO" }, { nome: "MARIA CAVALCANTE" }, { nome: "MARIA MÃE DE DEUS" }, { nome: "LÚCIA NEVES D." }],
+    "BURITIS": [{ nome: "ANTONIO FERREIRA" }],
+    "ILHA MIRIM": [{ nome: "SANDRA LOBATO" }],
+    "INFRAERO": [{ nome: "PROFª JOSAFA AIRES" }, { nome: "PROFª VERA LÚCIA" }, { nome: "SANDRA DO SOCORRO" }],
+    "IPE": [{ nome: "MARIA CELES FERREIRA" }],
+    "JARDIM FELICIDADE": [{ nome: "PROFª ELIANA FLEXA" }, { nome: "MARIA JOSÉ SOUZA" }, { nome: "SERAFINI COSTAPERÀRIA" }, { nome: "NEUZA DO CARMO" }, { nome: "JARDIM FELICIDADE" }, { nome: "MARIA DO CARMO V." }],
+    "JESUS DE NAZARÉ": [{ nome: "RONDÔNIA" }, { nome: "CASTRO ALVES" }, { nome: "ESCOLA JESUS DE NAZARÉ" }],
+    "LAGUINHO": [{ nome: "AZEVEDO COSTA" }, { nome: "EDGAR LINO" }, { nome: "AUGUSTO DOS ANJOS" }],
+    "MACAPABA": [{ nome: "PROFª MARLY MARIA" }, { nome: "PROFª ANTÔNIO M. LOPES" }],
+    "MIRACEMA": [{ nome: "CARLOS ALBERTO V." }],
+    "NOVO HORIZONTE": [{ nome: "DOM JOSÉ MARITANO" }, { nome: "DARCY RIBEIRO" }, { nome: "RIVANDA NAZARÉ" }, { nome: "RAIMUNDA DOS SANTOS" }, { nome: "RAIMUNDA DA SILVA V." }],
+    "PACOVAL": [{ nome: "EUNICE DAS CHAGAS" }, { nome: "JOSÉ DUARTE DE A." }, { nome: "DEUSOLINA SALES" }, { nome: "MUNDO DA CRIANÇA" }],
+    "PANTANAL": [{ nome: "RISALVA FREITAS" }],
+    "PERPÉTUO SOCORRO": [{ nome: "JOSÉ DE ALENCAR" }, { nome: "DEUZUITE CAVALCANTE" }, { nome: "SANTUÁRIO PERPÉTUO" }, { nome: "ARAÇARY CORRÊA" }, { nome: "MARIA IVONE DE M." }, { nome: "MARIO ANDREAZZA" }, { nome: "MAESTRO MIGUEL A." }],
+    "RENASCER": [{ nome: "PROFº JOSÉ LEOVES" }],
+    "SÃO LÁZARO": [{ nome: "ODETE ALMEIDA" }, { nome: "RUTH BEZERRA" }, { nome: "ESTHER DA SILVA VIR." }, { nome: "ESCOLA SÃO LÁZARO" }]
+};
         const selectBairro = document.getElementById("input-bairro");
         const selectEscola = document.getElementById("input-escola");
 
-        // Máscara de Telefone
-        document.getElementById("input-whatsapp").addEventListener("input", function (e) {
-            let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
-            e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
-        });
-
-        // Máscara de Data
-        document.getElementById("input-nascimento").addEventListener("input", function (e) {
-            let v = e.target.value.replace(/\D/g, '');
-            if (v.length > 8) v = v.slice(0, 8);
-            if (v.length >= 5) e.target.value = v.replace(/(\d{2})(\d{2})(\d{1,4})/, '$1/$2/$3');
-            else if (v.length >= 3) e.target.value = v.replace(/(\d{2})(\d{1,2})/, '$1/$2');
-            else e.target.value = v;
-        });
-
         // Preencher bairros
-        Object.keys(mapaDados).forEach(bairro => {
+        Object.keys(mapaDados).sort().forEach(bairro => {
             const opt = document.createElement("option");
             opt.value = bairro;
             opt.textContent = bairro;
             selectBairro.appendChild(opt);
         });
 
+        // Filtrar escolas
         selectBairro.addEventListener("change", () => {
             const bairro = selectBairro.value;
             selectEscola.innerHTML = '<option value="">Selecione uma escola...</option>';
@@ -111,28 +126,21 @@
             }
         });
 
-        // Supabase
+        // Inicialização Supabase
         const supabaseClient = supabase.createClient("https://giwnfttgradamcdbmceg.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdpd25mdHRncmFkYW1jZGJtY2VnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI0MTAzMTcsImV4cCI6MjA5Nzk4NjMxN30.Du5QNQ4K_ImVEdOhmJPR8SIktwsxKn5vpvp53tMH3Rs");
 
         document.getElementById("form-cadastro").addEventListener("submit", async (e) => {
             e.preventDefault();
             const btn = document.getElementById("btn-submit");
             btn.textContent = "Enviando...";
-
-            const dataDigitada = document.getElementById("input-nascimento").value;
-            let dataFormatada = null;
-            if (dataDigitada && dataDigitada.length === 10) {
-                const p = dataDigitada.split('/');
-                dataFormatada = `${p[2]}-${p[1]}-${p[0]}`;
-            }
-
+            
             const dados = {
                 bairro: selectBairro.value,
                 escola: selectEscola.value,
                 lider: document.getElementById("input-lider").value.trim() || '---',
                 nome: document.getElementById("input-nome").value.trim(),
                 nome_mae: document.getElementById("input-mae").value.trim() || '---',
-                data_nascimento: dataFormatada,
+                data_nascimento: document.getElementById("input-nascimento").value || null,
                 whatsapp: document.getElementById("input-whatsapp").value.trim(),
                 transporte: document.getElementById("input-transporte").value,
                 instagram: document.getElementById("input-instagram").value.trim() || '---',
@@ -149,6 +157,24 @@
             }
             btn.textContent = "Enviar Cadastro";
         });
+
+        // Adicione este bloco no seu <script> final
+const inputData = document.getElementById('input-nascimento');
+
+inputData.addEventListener('input', (e) => {
+    let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não é número
+    
+    // Aplica a máscara DD/MM/AAAA
+    if (value.length > 8) value = value.slice(0, 8);
+    
+    if (value.length >= 5) {
+        e.target.value = value.replace(/(\d{2})(\d{2})(\d{1,4})/, '$1/$2/$3');
+    } else if (value.length >= 3) {
+        e.target.value = value.replace(/(\d{2})(\d{1,2})/, '$1/$2');
+    } else {
+        e.target.value = value;
+    }
+});
     </script>
 </body>
 </html>
