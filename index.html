@@ -36,8 +36,8 @@
             <input type="text" id="input-nome" placeholder="Nome Completo" required class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
             <input type="text" id="input-mae" placeholder="Nome da Mãe" class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
             
-            <label class="block text-[10px] text-white uppercase font-bold">Data de Nascimento</label>
-            <input type="text" id="input-nascimento" placeholder="DD/MM/AAAA" maxlength="10" class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
+            <label class="block text-[12px] text-white uppercase font-bold">CPF</label>
+            <input type="text" id="input-cpf" placeholder="000.000.000-00" maxlength="14" required class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
 
             <div class="grid grid-cols-2 gap-4">
                 <input type="text" id="input-whatsapp" placeholder="(96) 99999-9999" maxlength="15" required class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
@@ -75,7 +75,7 @@
             "BURITIZAL": [{ nome: "EUNICE PICANÇO" }, { nome: "CARMELITA DO CARMO" }, { nome: "SEBASTIANA LENIR" }, { nome: "MÁRIO QUIRINO" }, { nome: "COELHO NETO" }, { nome: "CECÍLIA PINTO" }, { nome: "RORAIMA" }, { nome: "ARACY MONT'ALVERNE" }, { nome: "CEPA - CENTRO E. DO AP" }, { nome: "GONÇALVES DIAS" }],
             "CABRALZINHO": [{ nome: "SEST/SENAT" }, { nome: "MARIA DO SOCORRO A." }],
             "CENTRO": [{ nome: "GRAZIELA REIS" }, { nome: "GABRIEL DE ALMEIDA C." }, { nome: "PROFESSORA GUITA" }, { nome: "ANTÔNIO CORDEIRO P." }, { nome: "GUANABARA" }, { nome: "UEAP" }],
-            "CONGÓS": [{ nome: "IRINEU DA GAMA PAZ" }, { nome: "NELITA ROCHA" }, { nome: "BENIGNA MOREIRA" }],
+            "CONGÓS": [{ nome: "IRINEU DA GAMA PAZ" }, { nome: "NILTON BALIEIRO" }, { nome: "BENIGNA MOREIRA" }],
             "CORAÇÃO": [{ nome: "E.E.E.F. GOIÁS" }],
             "CUBA DE ASFALTO": [{ nome: "REINALDO DAMASCENO" }],
             "FAZENDINHA": [{ nome: "JOSÉ DO PATROCÍNIO" }, { nome: "CAETANO DIAS TOMÁS" }, { nome: "PROFª JACINTA MARIA" }, { nome: "CACILDA FERREIRA V." }, { nome: "IVANHOÉ GONÇALVES" }, { nome: "MARIA ANGÉLICA P." }],
@@ -88,7 +88,7 @@
             "PEDRINHAS": [{ nome: "MARIA DE NAZARÉ" }, { nome: "RAIMUNDA VIRGOLINO" }],
             "SANTA INÊS": [{ nome: "ANTÔNIO BARBOSA" }, { nome: "SANTA INÊS" }],
             "SANTA RITA": [{ nome: "LUCIMAR DEL CASTILHO" }, { nome: "TIRADENTES" }, { nome: "MEU PÉ DE LARANJA" }, { nome: "PREDICANDA LOPES" }, { nome: "JOSÉ DE ANCHIETA" }, { nome: "DOM ARISTIDES" }, { nome: "COARACY NUNES" }, { nome: "ARACY NASCIMENTO" }],
-            "TREM": [{ nome: "SANTINA RIOLI" }, { nome: "AMAPÁ" }, { nome: "ALEXANDRE V. TAVARES" }, { nome: "HILDEMAR MAIA" }, { nome: "JOSÉ FIRMO(CASTELO BRANCO)" }],
+            "TREM": [{ nome: "SANTINA RIOLI" }, { nome: "AMAPÁ" }, { nome: "ALEXANDRE V. TAVARES" }, { nome: "HILDEMAR MAIA" }, { nome: "JOSÉ FIRMO" }],
             "UNIVERSIDADE": [{ nome: "NEUZONA" }, { nome: "UNIFAP" }],
             "ZERÃO": [{ nome: "ANA MARIA DA SILVA" }, { nome: "ANTÔNIO MESSIAS" }, { nome: "NANCI NINA COSTA" }, { nome: "ANTÔNIO CASTRO" }],
             "BONÉ AZUL": [{ nome: "ONEIDE LIMA" }],
@@ -97,7 +97,7 @@
             "ILHA MIRIM": [{ nome: "SANDRA LOBATO" }],
             "INFRAERO": [{ nome: "PROFª JOSAFA AIRES" }, { nome: "PROFª VERA LÚCIA" }, { nome: "SANDRA DO SOCORRO" }],
             "IPE": [{ nome: "MARIA CELES FERREIRA" }],
-            "JARDIM FELICIDADE": [{ nome: "PROFª ELIANA FLEXA" }, { nome: "MARIA JOSÉ SOUZA" }, { nome: "SERAFINI COSTAPERÀRIA" }, { nome: "MARIA NEUSA DO CARMO" }, { nome: "JARDIM FELICIDADE" }, { nome: "MARIA DO CARMO V." }],
+            "JARDIM FELICIDADE": [{ nome: "PROFª ELIANA FLEXA" }, { nome: "MARIA JOSÉ SOUZA" }, { nome: "SERAFINI COSTAPERÀRIA" }, { nome: "NEUZA DO CARMO" }, { nome: "JARDIM FELICIDADE" }, { nome: "MARIA DO CARMO V." }],
             "JESUS DE NAZARÉ": [{ nome: "RONDÔNIA" }, { nome: "CASTRO ALVES" }, { nome: "ESCOLA JESUS DE NAZARÉ" }],
             "LAGUINHO": [{ nome: "AZEVEDO COSTA" }, { nome: "EDGAR LINO" }, { nome: "AUGUSTO DOS ANJOS" }],
             "MACAPABA": [{ nome: "PROFª MARLY MARIA" }, { nome: "PROFª ANTÔNIO M. LOPES" }],
@@ -147,20 +147,13 @@
             const btn = document.getElementById("btn-submit");
             btn.textContent = "Enviando...";
             
-            const inputData = document.getElementById("input-nascimento").value;
-            let dataParaBanco = null;
-            if (inputData && inputData.length === 10) {
-                const partes = inputData.split('/');
-                dataParaBanco = `${partes[2]}-${partes[1]}-${partes[0]}`;
-            }
-
             const dados = {
                 bairro: selectBairro.value,
                 escola: selectEscola.value,
                 lider: document.getElementById("input-lider").value.trim() || '---',
                 nome: inputNome.value.trim(),
                 nome_mae: document.getElementById("input-mae").value.trim() || '---',
-                data_nascimento: dataParaBanco,
+                cpf: document.getElementById("input-cpf").value.trim(),
                 whatsapp: document.getElementById("input-whatsapp").value.trim(),
                 transporte: document.getElementById("input-transporte").value,
                 instagram: document.getElementById("input-instagram").value.trim() || '---',
@@ -181,15 +174,18 @@
             }
         });
 
-        // Máscaras
-        document.getElementById('input-nascimento').addEventListener('input', (e) => {
+        // Máscara de CPF
+        document.getElementById('input-cpf').addEventListener('input', (e) => {
             let v = e.target.value.replace(/\D/g, '');
-            if (v.length > 8) v = v.slice(0, 8);
-            if (v.length >= 5) e.target.value = v.replace(/(\d{2})(\d{2})(\d{1,4})/, '$1/$2/$3');
-            else if (v.length >= 3) e.target.value = v.replace(/(\d{2})(\d{1,2})/, '$1/$2');
+            if (v.length > 11) v = v.slice(0, 11);
+            if (v.length > 9) v.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
+            if (v.length > 9) e.target.value = v.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
+            else if (v.length > 6) e.target.value = v.replace(/(\d{3})(\d{3})(\d{1,3})/, '$1.$2.$3');
+            else if (v.length > 3) e.target.value = v.replace(/(\d{3})(\d{1,3})/, '$1.$2');
             else e.target.value = v;
         });
 
+        // Máscara de WhatsApp
         document.getElementById("input-whatsapp").addEventListener("input", function (e) {
             let v = e.target.value.replace(/\D/g, '');
             if (v.length > 11) v = v.slice(0, 11);
