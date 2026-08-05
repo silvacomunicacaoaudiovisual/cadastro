@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Novo Cadastro - Zona Norte e Sul</title>
+    <title>Novo Cadastro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
@@ -19,47 +19,237 @@
 </head>
 <body class="bg-[var(--azul-marinho-escuro)] p-4 md:p-10 text-[var(--texto-principal)] font-sans">
 
-    <div class="max-w-lg mx-auto bg-[var(--azul-marinho-medio)] p-6 rounded-xl border border-slate-800 shadow-xl">
-        <h2 class="text-2xl font-bold text-white mb-6 border-b border-slate-800 pb-3">Novo Cadastro</h2>
-        
-        <form id="form-cadastro" class="space-y-4">
-            <div class="grid grid-cols-2 gap-4">
-                <select id="input-bairro" required class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm text-white focus:border-blue-500 outline-none">
-                    <option value="">Selecione um bairro...</option>
-                </select>
-                <select id="input-escola" required class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm text-white focus:border-blue-500 outline-none">
-                    <option value="">Selecione uma escola...</option>
-                </select>
+    <div id="tela-login" class="max-w-sm mx-auto bg-[var(--azul-marinho-medio)] p-6 rounded-xl border border-slate-800 shadow-xl mt-20">
+        <h2 class="text-2xl font-bold text-white mb-1 text-center">Acessar Painel</h2>
+        <p class="text-xs text-slate-300 mb-6 text-center"></p>
+
+        <form id="form-login" class="space-y-4">
+            <div>
+                <label class="block text-[12px] text-white uppercase font-bold mb-1">Telefone</label>
+                <input type="text" id="login-telefone" placeholder="(96) 99999-9999" maxlength="15" required autocomplete="off" class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
             </div>
-
-            <input type="text" id="input-lider" placeholder="Líder" class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
-            <input type="text" id="input-nome" placeholder="Nome Completo" required class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
-            <input type="text" id="input-mae" placeholder="Nome da Mãe" class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
-            
-            <label class="block text-[12px] text-white uppercase font-bold">Data de Nascimento</label>
-            <input type="text" id="input-nascimento" placeholder="DD/MM/AAAA" maxlength="10" required class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
-
-            <div class="grid grid-cols-2 gap-4">
-                <input type="text" id="input-whatsapp" placeholder="(96) 99999-9999" maxlength="15" required class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
-                <select id="input-transporte" class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
-                    <option value="Não">Sem Transporte</option>
-                    <option value="Carro">Carro</option>
-                    <option value="Moto">Moto</option>
-                </select>
+            <div>
+                <label class="block text-[12px] text-white uppercase font-bold mb-1">Informe seu PIN de 4 dígitos para entrar</label>
+                <input type="password" id="login-senha" placeholder="0000" maxlength="4" inputmode="numeric" required autocomplete="off" class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
             </div>
-
-            <input type="text" id="input-instagram" placeholder="Instagram (@usuario)" class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
-            <input type="text" id="input-facebook" placeholder="Facebook (nome ou link)" class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
-
-            <button type="submit" id="btn-submit" class="w-full bg-[var(--azul-botao)] hover:bg-blue-500 text-white font-bold py-3 rounded-lg transition shadow-lg mt-4">
-                Enviar Cadastro
+            <p id="login-erro" class="text-red-400 text-xs hidden"></p>
+            <button type="submit" id="btn-login" class="w-full bg-[var(--azul-botao)] hover:bg-blue-500 text-white font-bold py-3 rounded-lg transition shadow-lg">
+                Entrar
             </button>
         </form>
     </div>
 
+    <div id="tela-cadastro" class="max-w-lg mx-auto bg-[var(--azul-marinho-medio)] p-6 rounded-xl border border-slate-800 shadow-xl hidden">
+        <div class="flex justify-between items-center mb-6 border-b border-slate-800 pb-3">
+            <h2 class="text-2xl font-bold text-white">Painel do Usuário</h2>
+            <div class="text-right">
+                <p class="text-xs text-slate-300">Logado como</p>
+                <p id="lider-logado-nome" class="text-sm font-bold text-white mb-2"></p>
+                <button id="btn-sair" type="button" class="inline-flex items-center gap-1.5 text-xs font-bold text-red-300 border border-red-400/40 bg-red-500/10 hover:bg-red-500/20 hover:text-red-200 py-1.5 px-3 rounded-lg transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 001 1h6a1 1 0 100-2H4V6h5a1 1 0 100-2H3zm10.293 3.293a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L14.586 11H7a1 1 0 110-2h7.586l-1.293-1.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                    Sair
+                </button>
+            </div>
+        </div>
+
+        <!-- LISTA DE CADASTROS DO LÍDER -->
+        <div id="painel-lista">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-sm font-bold text-white">Meus Cadastros (<span id="contador-cadastros">0</span>)</h3>
+                <button id="btn-abrir-form" type="button" class="bg-[var(--azul-botao)] hover:bg-blue-500 text-white text-sm font-bold py-2 px-4 rounded-lg transition shadow-lg">
+                    + Cadastrar
+                </button>
+            </div>
+            <div id="lista-meus-cadastros" class="space-y-2 max-h-[65vh] overflow-y-auto"></div>
+        </div>
+
+        <!-- FORMULÁRIO DE NOVO CADASTRO -->
+        <div id="painel-form" class="hidden">
+            <button id="btn-voltar-lista" type="button" class="inline-flex items-center gap-1.5 text-sm font-bold text-white border border-slate-700 bg-slate-900/60 hover:bg-slate-900 py-2 px-4 rounded-lg transition mb-4 shadow">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 111.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"/></svg>
+                Voltar para a lista
+            </button>
+
+            <form id="form-cadastro" class="space-y-4">
+                <select id="input-municipio" required class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm text-white focus:border-blue-500 outline-none">
+                    <option value="">Selecione um município...</option>
+                </select>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <select id="input-bairro" required class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm text-white focus:border-blue-500 outline-none">
+                        <option value="">Selecione um bairro...</option>
+                    </select>
+                    <select id="input-escola" required class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm text-white focus:border-blue-500 outline-none">
+                        <option value="">Selecione uma escola...</option>
+                    </select>
+                </div>
+
+                <input type="text" id="input-lider" placeholder="Líder" readonly class="w-full bg-slate-900 border border-slate-800 p-2.5 rounded-lg text-sm opacity-80 cursor-not-allowed">
+                <input type="text" id="input-nome" placeholder="Nome Completo" required class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
+                <input type="text" id="input-mae" placeholder="Nome da Mãe" required class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
+                
+                <label class="block text-[12px] text-white uppercase font-bold">Data de Nascimento</label>
+                <input type="text" id="input-nascimento" placeholder="DD/MM/AAAA" maxlength="10" required class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
+
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="text" id="input-whatsapp" placeholder="(96) 99999-9999" maxlength="15" required class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
+                    <select id="input-transporte" class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
+                        <option value="Não">Sem Transporte</option>
+                        <option value="Carro">Carro</option>
+                        <option value="Moto">Moto</option>
+                    </select>
+                </div>
+
+                <input type="text" id="input-instagram" placeholder="Instagram (@usuario)" class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
+                <input type="text" id="input-facebook" placeholder="Facebook (nome ou link)" class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
+
+                <button type="submit" id="btn-submit" class="w-full bg-[var(--azul-botao)] hover:bg-blue-500 text-white font-bold py-3 rounded-lg transition shadow-lg mt-4">
+                    Enviar Cadastro
+                </button>
+            </form>
+        </div>
+    </div>
+
     <script>
         const supabaseClient = supabase.createClient("https://giwnfttgradamcdbmceg.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdpd25mdHRncmFkYW1jZGJtY2VnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI0MTAzMTcsImV4cCI6MjA5Nzk4NjMxN30.Du5QNQ4K_ImVEdOhmJPR8SIktwsxKn5vpvp53tMH3Rs");
-        
+
+        /* ---- Lista "Meus Cadastros" + alternância lista/formulário ---- */
+        const painelLista = document.getElementById("painel-lista");
+        const painelForm = document.getElementById("painel-form");
+
+        function mostrarLista() {
+            painelForm.classList.add("hidden");
+            painelLista.classList.remove("hidden");
+        }
+
+        function mostrarForm() {
+            painelLista.classList.add("hidden");
+            painelForm.classList.remove("hidden");
+        }
+
+        function normalizarTexto(str) {
+            return String(str || '').trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, "");
+        }
+
+        async function carregarMeusCadastros(nomeLider) {
+            const listaEl = document.getElementById("lista-meus-cadastros");
+            const contadorEl = document.getElementById("contador-cadastros");
+            listaEl.innerHTML = `<p class="text-xs text-slate-300 text-center py-4">Carregando...</p>`;
+
+            const { data, error } = await supabaseClient.from('cadastros_votos').select('*');
+
+            if (error) {
+                listaEl.innerHTML = `<p class="text-xs text-red-400 text-center py-4">Erro ao carregar: ${error.message}</p>`;
+                return;
+            }
+
+            const meus = (data || []).filter(item => normalizarTexto(item.lider) === normalizarTexto(nomeLider));
+            contadorEl.textContent = meus.length;
+
+            if (meus.length === 0) {
+                console.log('[Meus Cadastros] Nenhum registro bateu com o líder "' + nomeLider + '". Nomes de líder existentes no banco:',
+                    [...new Set((data || []).map(i => i.lider).filter(Boolean))]);
+                listaEl.innerHTML = `<p class="text-xs text-slate-300 text-center py-6">Você ainda não cadastrou ninguém. Clique em "+ Cadastrar" para começar.</p>`;
+                return;
+            }
+
+            listaEl.innerHTML = meus.slice().reverse().map(item => `
+                <div class="bg-[var(--cinza-fundo-input)] border border-slate-800 rounded-lg p-3">
+                    <p class="text-sm font-bold text-white">${item.nome || 'N/A'}</p>
+                    <p class="text-xs text-slate-300">${item.escola || '---'} ${item.bairro ? '· ' + item.bairro : ''}</p>
+                    <p class="text-xs text-slate-400">${item.whatsapp || '---'}</p>
+                </div>
+            `).join('');
+        }
+
+        /* ---- Login do líder ---- */
+        const telaLogin = document.getElementById("tela-login");
+        const telaCadastro = document.getElementById("tela-cadastro");
+        const formLogin = document.getElementById("form-login");
+        const loginErro = document.getElementById("login-erro");
+
+        function mostrarErroLogin(msg) {
+            loginErro.textContent = msg;
+            loginErro.classList.remove("hidden");
+        }
+
+        function entrarComoLider(nome) {
+            localStorage.setItem("liderLogadoNome", nome);
+            document.getElementById("lider-logado-nome").textContent = nome;
+            document.getElementById("input-lider").value = nome;
+            telaLogin.classList.add("hidden");
+            telaCadastro.classList.remove("hidden");
+            mostrarLista();
+            carregarMeusCadastros(nome);
+        }
+
+        // Mantém login entre visitas (o líder não precisa logar toda hora)
+        const liderSalvo = localStorage.getItem("liderLogadoNome");
+        if (liderSalvo) entrarComoLider(liderSalvo);
+
+        document.getElementById("btn-sair").addEventListener("click", () => {
+            localStorage.removeItem("liderLogadoNome");
+            telaCadastro.classList.add("hidden");
+            telaLogin.classList.remove("hidden");
+            formLogin.reset();
+            mostrarLista();
+        });
+
+        formLogin.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            loginErro.classList.add("hidden");
+
+            const telefoneDigitado = document.getElementById("login-telefone").value.replace(/\D/g, '');
+            const senhaDigitada = document.getElementById("login-senha").value.trim();
+            const btnLogin = document.getElementById("btn-login");
+
+            if (telefoneDigitado.length < 10) { mostrarErroLogin("Digite o telefone completo, com DDD."); return; }
+            if (senhaDigitada.length !== 4) { mostrarErroLogin("A senha são os 4 últimos dígitos do seu telefone."); return; }
+
+            btnLogin.textContent = "Entrando...";
+            btnLogin.disabled = true;
+
+            const { data, error } = await supabaseClient
+                .from('lideres')
+                .select('*')
+                .eq('telefone', telefoneDigitado)
+                .maybeSingle();
+
+            btnLogin.textContent = "Entrar";
+            btnLogin.disabled = false;
+
+            if (error) {
+                mostrarErroLogin("Erro ao consultar login: " + error.message);
+                return;
+            }
+            if (!data) {
+                mostrarErroLogin("Telefone não encontrado. Fale com o administrador do sistema.");
+                return;
+            }
+            if (data.telefone.slice(-4) !== senhaDigitada) {
+                mostrarErroLogin("Senha incorreta.");
+                return;
+            }
+
+            entrarComoLider(data.nome);
+        });
+
+        // Máscara do telefone de login
+        document.getElementById("login-telefone").addEventListener("input", function (e) {
+            let v = e.target.value.replace(/\D/g, '');
+            if (v.length > 11) v = v.slice(0, 11);
+            if (v.length > 6) e.target.value = v.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+            else if (v.length > 2) e.target.value = v.replace(/(\d{2})(\d{0,5})/, '($1) $2');
+            else if (v.length > 0) e.target.value = v.replace(/(\d{0,2})/, '($1');
+        });
+        document.getElementById("login-senha").addEventListener("input", function (e) {
+            e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
+        });
+
+        document.getElementById("btn-abrir-form").addEventListener("click", mostrarForm);
+        document.getElementById("btn-voltar-lista").addEventListener("click", mostrarLista);
+
+
         let listaNomes = [];
 
         async function carregarNomes() {
@@ -70,64 +260,268 @@
         }
         carregarNomes();
 
-        const mapaDados = {
-            "BEIROL": [{ nome: "ZOLITO D. JESUS NUNES" }, { nome: "PROF. ROBERTO - CENAP" }],
-            "BURITIZAL": [{ nome: "EUNICE PICANÇO" }, { nome: "CARMELITA DO CARMO" }, { nome: "SEBASTIANA LENIR" }, { nome: "MÁRIO QUIRINO" }, { nome: "COELHO NETO" }, { nome: "CECÍLIA PINTO" }, { nome: "RORAIMA" }, { nome: "ARACY MONT'ALVERNE" }, { nome: "CEPA - CENTRO E. DO AP" }, { nome: "GONÇALVES DIAS" }],
-            "CABRALZINHO": [{ nome: "SEST/SENAT" }, { nome: "MARIA DO SOCORRO A." }],
-            "CENTRO": [{ nome: "GRAZIELA REIS" }, { nome: "GABRIEL DE ALMEIDA C." }, { nome: "PROFESSORA GUITA" }, { nome: "ANTÔNIO CORDEIRO P." }, { nome: "GUANABARA" }, { nome: "UEAP" }],
-            "CONGÓS": [{ nome: "IRINEU DA GAMA PAZ" }, { nome: "NILTON BALIEIRO" }, { nome: "BENIGNA MOREIRA" }],
-            "CORAÇÃO": [{ nome: "E.E.E.F. GOIÁS" }],
-            "CUBA DE ASFALTO": [{ nome: "REINALDO DAMASCENO" }],
-            "FAZENDINHA": [{ nome: "JOSÉ DO PATROCÍNIO" }, { nome: "CAETANO DIAS TOMÁS" }, { nome: "PROFª JACINTA MARIA" }, { nome: "CACILDA FERREIRA V." }, { nome: "IVANHOÉ GONÇALVES" }, { nome: "MARIA ANGÉLICA P." }],
-            "IGARAPÉ DA FORTALEZA": [{ nome: "PROFª MARGARIDA R." }],
-            "JARDIM EQUATORIAL": [{ nome: "WILSON MALCHER" }],
-            "MARABAIXO": [{ nome: "RAIMUNDA GUEDES" }, { nome: "NILTON BALIEIRO" }, { nome: "IRMÃ CARMELA B." }],
-            "MUCA": [{ nome: "PARAÍSO DAS ACÁCIAS" }, { nome: "LAURO CHAVES" }, { nome: "ESFORÇO POPULAR" }],
-            "NOVA ESPERANÇA": [{ nome: "JOSEFA JUCILEIDE" }],
-            "NOVO BURITIZAL": [{ nome: "ELITA NUNES MELO" }, { nome: "RAIMUNDO ALENCAR" }, { nome: "ANA LUIZA DE SOUZA" }],
-            "PEDRINHAS": [{ nome: "MARIA DE NAZARÉ" }, { nome: "RAIMUNDA VIRGOLINO" }],
-            "SANTA INÊS": [{ nome: "ANTÔNIO BARBOSA" }, { nome: "SANTA INÊS" }],
-            "SANTA RITA": [{ nome: "LUCIMAR DEL CASTILHO" }, { nome: "TIRADENTES" }, { nome: "MEU PÉ DE LARANJA" }, { nome: "PREDICANDA LOPES" }, { nome: "JOSÉ DE ANCHIETA" }, { nome: "DOM ARISTIDES" }, { nome: "COARACY NUNES" }, { nome: "ARACY NASCIMENTO" }],
-            "TREM": [{ nome: "SANTINA RIOLI" }, { nome: "AMAPÁ" }, { nome: "ALEXANDRE V. TAVARES" }, { nome: "HILDEMAR MAIA" }, { nome: "JOSÉ FIRMO" }],
-            "UNIVERSIDADE": [{ nome: "NEUZONA" }, { nome: "UNIFAP" }],
-            "ZERÃO": [{ nome: "ANA MARIA DA SILVA" }, { nome: "ANTÔNIO MESSIAS" }, { nome: "NANCI NINA COSTA" }, { nome: "ANTÔNIO CASTRO" }],
-            "BONÉ AZUL": [{ nome: "ONEIDE LIMA" }],
-            "BRASIL NOVO": [{ nome: "ESCOLA BRASIL NOVO" }, { nome: "MARIA CAVALCANTE" }, { nome: "MARIA MÃE DE DEUS" }, { nome: "LÚCIA NEVES D." }],
-            "BURITIS": [{ nome: "ANTONIO FERREIRA" }],
-            "ILHA MIRIM": [{ nome: "SANDRA LOBATO" }],
-            "INFRAERO": [{ nome: "PROFª JOSAFA AIRES" }, { nome: "PROFª VERA LÚCIA" }, { nome: "SANDRA DO SOCORRO" }],
-            "IPE": [{ nome: "MARIA CELES FERREIRA" }],
-            "JARDIM FELICIDADE": [{ nome: "PROFª ELIANA FLEXA" }, { nome: "MARIA JOSÉ SOUZA" }, { nome: "SERAFINI COSTAPERÀRIA" }, { nome: "NEUZA DO CARMO" }, { nome: "JARDIM FELICIDADE" }, { nome: "MARIA DO CARMO V." }],
-            "JESUS DE NAZARÉ": [{ nome: "RONDÔNIA" }, { nome: "CASTRO ALVES" }, { nome: "ESCOLA JESUS DE NAZARÉ" }],
-            "LAGUINHO": [{ nome: "AZEVEDO COSTA" }, { nome: "EDGAR LINO" }, { nome: "AUGUSTO DOS ANJOS" }],
-            "MACAPABA": [{ nome: "PROFª MARLY MARIA" }, { nome: "PROFª ANTÔNIO M. LOPES" }],
-            "MIRACEMA": [{ nome: "CARLOS ALBERTO V." }],
-            "NOVO HORIZONTE": [{ nome: "DOM JOSÉ MARITANO" }, { nome: "DARCY RIBEIRO" }, { nome: "RIVANDA NAZARÉ" }, { nome: "RAIMUNDA DOS SANTOS" }, { nome: "RAIMUNDA DA SILVA V." }],
-            "PACOVAL": [{ nome: "EUNICE DAS CHAGAS" }, { nome: "JOSÉ DUARTE DE A." }, { nome: "DEUSOLINA SALES" }, { nome: "MUNDO DA CRIANÇA" }],
-            "PANTANAL": [{ nome: "RISALVA FREITAS" }],
-            "PERPÉTUO SOCORRO": [{ nome: "JOSÉ DE ALENCAR" }, { nome: "DEUZUITE CAVALCANTE" }, { nome: "SANTUÁRIO PERPÉTUO" }, { nome: "ARAÇARY CORRÊA" }, { nome: "MARIA IVONE DE M." }, { nome: "MARIO ANDREAZZA" }, { nome: "MAESTRO MIGUEL A." }],
-            "RENASCER": [{ nome: "PROFº JOSÉ LEOVES" }],
-            "SÃO LÁZARO": [{ nome: "ODETE ALMEIDA" }, { nome: "RUTH BEZERRA" }, { nome: "ESTHER DA SILVA VIR." }, { nome: "ESCOLA SÃO LÁZARO" }]
-        };
+        const mapaMunicipios = {
+    "Macapá": {
+        "BEIROL": ["ZOLITO D. JESUS NUNES", "PROF. ROBERTO - CENAP"],
+        "BONÉ AZUL": ["ONEIDE LIMA"],
+        "BRASIL NOVO": ["ESCOLA BRASIL NOVO", "MARIA CAVALCANTE", "MARIA MÃE DE DEUS", "LÚCIA NEVES D."],
+        "BURITIS": ["ANTONIO FERREIRA"],
+        "BURITIZAL": ["EUNICE PICANÇO", "CARMELITA DO CARMO", "SEBASTIANA LENIR", "MÁRIO QUIRINO", "COELHO NETO", "CECÍLIA PINTO", "RORAIMA", "ARACY MONT'ALVERNE", "CEPA - CENTRO E. DO AP", "GONÇALVES DIAS"],
+        "CABRALZINHO": ["SEST/SENAT", "MARIA DO SOCORRO A."],
+        "CENTRO": ["GRAZIELA REIS", "GABRIEL DE ALMEIDA C.", "PROFESSORA GUITA", "ANTÔNIO CORDEIRO P.", "GUANABARA", "UEAP"],
+        "CONGÓS": ["IRINEU DA GAMA PAZ", "NELITA ROCHA", "BENIGNA MOREIRA"],
+        "CORAÇÃO": ["E.E.E.F. GOIÁS"],
+        "CUBA DE ASFALTO": ["REINALDO DAMASCENO"],
+        "FAZENDINHA": ["JOSÉ DO PATROCÍNIO", "CAETANO DIAS TOMÁS", "PROFª JACINTA MARIA", "CACILDA FERREIRA V.", "IVANHOÉ GONÇALVES", "MARIA ANGÉLICA P."],
+        "IGARAPÉ DA FORTALEZA": ["PROFª MARGARIDA R."],
+        "ILHA MIRIM": ["SANDRA LOBATO"],
+        "INFRAERO": ["PROFª JOSAFA AIRES", "PROFª VERA LÚCIA", "SANDRA DO SOCORRO"],
+        "IPE": ["MARIA CELES FERREIRA"],
+        "JARDIM EQUATORIAL": ["WILSON MALCHER"],
+        "JARDIM FELICIDADE": ["PROFª ELIANA FLEXA", "MARIA JOSÉ SOUZA", "SERAFINI COSTAPERÀRIA", "MARIA NEUSA DO CARMO", "JARDIM FELICIDADE", "MARIA DO CARMO V."],
+        "JESUS DE NAZARÉ": ["RONDÔNIA", "CASTRO ALVES", "ESCOLA JESUS DE NAZARÉ"],
+        "LAGUINHO": ["AZEVEDO COSTA", "EDGAR LINO", "AUGUSTO DOS ANJOS"],
+        "MACAPABA": ["PROFª MARLY MARIA", "PROFª ANTÔNIO M. LOPES"],
+        "MARABAIXO": ["RAIMUNDA GUEDES", "NILTON BALIEIRO", "IRMÃ CARMELA B."],
+        "MIRACEMA": ["CARLOS ALBERTO V."],
+        "MUCA": ["PARAÍSO DAS ACÁCIAS", "LAURO CHAVES", "ESFORÇO POPULAR"],
+        "NOVA ESPERANÇA": ["JOSEFA JUCILEIDE"],
+        "NOVO BURITIZAL": ["ELITA NUNES MELO", "RAIMUNDO ALENCAR", "ANA LUIZA DE SOUZA"],
+        "NOVO HORIZONTE": ["DOM JOSÉ MARITANO", "DARCY RIBEIRO", "RIVANDA NAZARÉ", "RAIMUNDA DOS SANTOS", "RAIMUNDA DA SILVA V."],
+        "PACOVAL": ["EUNICE DAS CHAGAS", "JOSÉ DUARTE DE A.", "DEUSOLINA SALES", "MUNDO DA CRIANÇA"],
+        "PANTANAL": ["RISALVA FREITAS"],
+        "PEDRINHAS": ["MARIA DE NAZARÉ", "RAIMUNDA VIRGOLINO"],
+        "PERPÉTUO SOCORRO": ["JOSÉ DE ALENCAR", "DEUZUITE CAVALCANTE", "SANTUÁRIO PERPÉTUO", "ARAÇARY CORRÊA", "MARIA IVONE DE M.", "MARIO ANDREAZZA", "MAESTRO MIGUEL A."],
+        "RENASCER": ["PROFº JOSÉ LEOVES"],
+        "SANTA INÊS": ["ANTÔNIO BARBOSA", "SANTA INÊS"],
+        "SANTA RITA": ["LUCIMAR DEL CASTILHO", "TIRADENTES", "MEU PÉ DE LARANJA", "PREDICANDA LOPES", "JOSÉ DE ANCHIETA", "DOM ARISTIDES", "COARACY NUNES", "ARACY NASCIMENTO"],
+        "SÃO LÁZARO": ["ODETE ALMEIDA", "RUTH BEZERRA", "ESTHER DA SILVA VIR.", "ESCOLA SÃO LÁZARO"],
+        "TREM": ["SANTINA RIOLI", "AMAPÁ", "ALEXANDRE V. TAVARES", "HILDEMAR MAIA", "JOSÉ FIRMO(CASTELO BRANCO)"],
+        "UNIVERSIDADE": ["NEUZONA", "UNIFAP"],
+        "ZERÃO": ["ANA MARIA DA SILVA", "ANTÔNIO MESSIAS", "NANCI NINA COSTA", "ANTÔNIO CASTRO"]
+    },
+    "Amapá": {
+        "BOM JARDIM": ["E.M. FRANCISCO ALVES"],
+        "CENTRO": ["E.E. VEIGA CABRAL", "E.M. PROF.ª SHIRLEY LOBATO"],
+        "CRUZEIRO": ["ESCOLA MUN. DO CRUZEIRO"],
+        "NOVA ESPERANÇA": ["E.E. MARIA DO CÉU DIAS"],
+        "PIQUIÁ": ["E.E. ROZEND N. FILHO"],
+        "SETE MANGUEIRAS": ["E.E. VIDAL DE NEGREIROS", "E.E. PROF.ª Mª ESMERALDINA"],
+        "SUCURIJU": ["E.E. ANTÔNIO TEIXEIRA GUERRA"],
+        "VILA NOVA": ["E.M. LOURENÇO B. FAÇANHA"]
+    },
+    "Calçoene": {
+        "BEIRA RIO": ["E.E. AMARO BRASILINO"],
+        "CALAFATE": ["E.E.E. 1º GRAU DO CALAFATE"],
+        "CARNOT": ["E.E. IVANILDO FORTE SILVA"],
+        "CENTRO": ["E.E. PROFº SILVIO ELITO", "E.E. LOBO D'ALMADA", "E.E.P.G. JOSÉ RODRIGUES"],
+        "ILHA GRANDE": ["E.M. RAIMUNDA DA SILVA"],
+        "LOURENÇO": ["E.E. JUVENAL GUIMARÃES"],
+        "PALMEIRAS": ["E.E. PROF. NELMA SUELI"]
+    },
+    "Cutias": {
+        "CENTRO": ["E.P.G. LOURIMAR SIMÕES", "E.M.P.G. ALICE NASCIMENTO", "CRECHE PINGO DE GENTE"],
+        "GURUPORA": ["E.M. ÁLVARO MARQUES"],
+        "LIVRAMENTO": ["E.M. DOMINGOS VALENTE"],
+        "RIO ARAGUARI": ["E.E. PRACUÚBA DO ARAGUARI"]
+    },
+    "Ferreira Gomes": {
+        "CENTRO": ["E.M. PASTOR J. TORQUATO", "E.E. PROFª Mª IRACI TAVARES"],
+        "FERREIRINHA": ["E.M. VALDIR F. MENDES"],
+        "MONTANHA": ["E.M. JOÃO F. CORDEIRO"],
+        "VILA DO PAREDÃO": ["E.E. INDEPENDÊNCIA"]
+    },
+    "Itaubal": {
+        "CARMO DO MACACOARI": ["E.E. ANA CLÁUDIA PICANÇO"],
+        "CENTRO": ["E.E. WILSON HILL DE ARAÚJO", "E.E.E.F. J ALMEIDA"],
+        "CURICACA": ["E.E. ESTEVAM DE CARVALHO"],
+        "FOZ DO RIO MACACOARI": ["E.E.E.F. EUGÊNIO MACHADO"],
+        "IGARAPÉ NOVO": ["E.M. MIGUEL JORGE HAUAT"],
+        "INAJÁ": ["E.M. ANTÔNIO MAXIMINO"],
+        "IPIXUNA": ["E.E. IPIXUNA GRANDE"],
+        "PAU MULATO": ["E.E. NOVA VIDA"],
+        "URUÁ": ["E.E. ADELANO NUNES"]
+    },
+    "Laranjal do Jari": {
+        "AGRESTE": ["E.M. MUNDO ENCANTADO", "E.E. MINEKO HAYASHIDA", "E.M. RAIMUNDA R. CAPIBERIBE", "E.E. Mª DE NAZARÉ RODRIGUES", "E.M.B. PROF.ª TEREZA TELES"],
+        "AREA RURAL": ["E.E. SANTA CLARA DO CAJAR"],
+        "ASSENTA NAZARÉ": ["E.M. CONCEIÇÃO DO MURIACÁ"],
+        "BOCA DO BRAÇO": ["E.E. FRANCISCO O. FILHO"],
+        "CASTANHEIRA": ["E.M. TEREZINHA QUEIROGA"],
+        "CENTRO": ["E.M. VINHA DE LUZ", "E.E. IRANDYR PONTES", "E.E. SÔNIA HENRIQUES"],
+        "COMUNIDADE DOS MARTINS": ["E.M. CRISTO REDENTOR"],
+        "IRATAPURU": ["E.M. SÃO FRANCISCO DO IRATAPURU"],
+        "LOTEAMENTO CAJARY": ["C.E. WEBER ELDER QUEMEL", "E.E. PROF.ª WANDA MARIA"],
+        "LOTEAMENTO SARNEY": ["E.E. AMIGO MANOEL MANDI", "E.M. SANTA LÚCIA"],
+        "MALVINAS": ["E.E. EMÍLIO MÉDICI", "E.M. JOÃO QUEIROGA"],
+        "MURIACÁ": ["E.M. CONCEIÇÃO DO MURIACÁ"],
+        "NOVA ESPERANÇA": ["E.M. ZÉLIA CONCEIÇÃO"],
+        "SAGRADO CORAÇÃO": ["E.P.G. JOSÉ RIBAMAR"],
+        "VILA DA PADARIA": ["E.E. PADARIA"],
+        "VILA ÁGUA BRANCA": ["E.P.G. ÁGUA BRANCA DO CAJARI"]
+    },
+    "Mazagão": {
+        "AÇAITUBA": ["E.M. SÃO M. DE MONTE SINA"],
+        "BETEL": ["E.M. DO RIO ARIRAMBA"],
+        "BOM JESUS": ["E.M. DOMINGOS VALENTE BARRET"],
+        "CARVÃO": ["E.E. FAGUNDES VARELA"],
+        "CENTRO": ["E.M. TIA RAIMUNDA PUREZA", "E.E. DR. MURILO BRAGA", "E.E. DOM PEDRO I"],
+        "CURUÇÁ": ["E.M. CURUÇÁ"],
+        "MACEDÔNIA": ["E.P.G. DO CASSIPORÉ"],
+        "MARACÁ": ["E.E. EVILÁSIO P. DE ALMEIDA", "E.M. SOROROCA", "E.M. CENTRAL DO MARACÁ", "E.M. E.M. RAIMUNDO A. VEIRA", "E.M. SÃO JOSÉ DO MARACÁ", "E.M. STA Mª DO FURO DO MARACÁ", "E.M. BARRO ALTO", "E.M. CONCEIÇÃO DO MARACA"],
+        "MARANATA": ["E.E. OSMUNDO VALENTE BARRETO"],
+        "MARIA SANTA": ["E.M. VILHENA ALVES"],
+        "MAZAGÃO VELHO": ["E.M.B. ANTÔNIA S. SANTOS", "E.M. PROF.ª IZIDORA DA SILVA"],
+        "MUTUACÁ": ["E.M.E.F BAIXO DO MUTUACÁ"],
+        "OLARIA": ["E.M. MANOEL B. QUEIROZ", "E.M. AMÉLIA DOS SANTOS"],
+        "PIQUIAZAL": ["E.E.P.G. PIQUIAZAL"],
+        "RIO BANHA": ["E.E. PRES. TANCREDONEVS"],
+        "RIO NAVIO": ["E.E. RIO NAVIO"],
+        "RIO PRETO": ["E.E. JOSÉ HILÁRIO", "E.M. PORÇÃO DO RIO PRETO", "E.E. AMILAR ARTUR BRENHA"],
+        "SANTA FÉ": ["E.E. PANCADA DO CAMAIPI"],
+        "SÃO TIAGO": ["E.M.PROF.ª LUCICARME BARRETO"],
+        "UNIÃO": ["E.M. PROF.ª OTÁVIO CALDEIRA"]
+    },
+    "Oiapoque": {
+        "ALDEIA DO MANGA": ["E.P.G. MANGA"],
+        "ALDEIA ESPÍRITO SANTO": ["E.IND. JOÃO TEODORO FORTES"],
+        "ALDEIA KUMARUMÃ": ["E.P.G. KUMARUMÃ"],
+        "ALDEIA KUMENÊ": ["E.P.G. URUCAU"],
+        "ALDEIA SANTA IZABEL": ["E.P.G. SANTA IZABEL"],
+        "CASSIPORÉ": ["E.P.G. DO CASSIPORÉ"],
+        "CENTRO": ["E.M.E.F ANETE FARIAS", "E.M.E.I. ABC", "E.P.G. JOAQUIM NABUCO", "E.P.G. JOAQUIM CAETANO", "INSTITUTO FEDERAL DO AMAPÁ (IFAP)", "E.E. MÁRCIA DO SOCORRO"],
+        "CLEVELÂNDIA": ["E.E. DUQUE DE CAXIAS"],
+        "INFRAERO": ["CIRETRAN"],
+        "PLANALTO": ["E.M. PROF. RUI MARQUES"],
+        "TAPARABU": ["E.P.G. TAPARABU"],
+        "UNIVERSIDADE": ["CAMPUS UNIV. BINACIONAL"],
+        "VILA BRASIL": ["E.M. VILA BRASIL"],
+        "VILA VELHA": ["E.P.G. VILA VELHA"],
+        "VILA VITÓRIA": ["E.M. VILA VITÓRIA"]
+    },
+    "Pedra Branca do Amapari": {
+        "ALDEIA ARAMIRÃ": ["E.E. DAS ALDEIAS WAIÃP"],
+        "CENTRO": ["E.M.E.F. SÃO PEDRO", "E.E. Mª H. CORDEIRO"],
+        "COMUNIDADE RIOZINHO": ["E.M.E.F. RIOZINHO"],
+        "REVIVER": ["E.E. ERIKA D. DE CASTRO"],
+        "TUCANO II": ["E.M. DO TUCANO II"],
+        "ÁGUA FRIA": ["E.E. JOSÉ F. DA SILVA"]
+    },
+    "Porto Grande": {
+        "AEROPORTO": ["E.E. ELIAS FREITAS TRAJANO", "E.M. ADÃO FERREIRA"],
+        "CAMPO VERDE": ["E.E. CAMPO VERDE"],
+        "CENTRO": ["E.E. PROF.ª Mª C. BOTELHO", "E.M. ACRE"],
+        "COMUNIDADE KM 142": ["E.M. JOANA Mª DA SILVA"],
+        "CUPIXI": ["E.M. CUPIXI"],
+        "GARIMPO VILA NOVA": ["E.E. SANTA MARIA"],
+        "MATAPI": ["E.E. MATAPI II"],
+        "MUNGUBA": ["E.M. ELILUCIA DE SOUZA"],
+        "NOVA COLINA": ["E.E. NOVA COLINA"],
+        "NOVA ESPERANÇA": ["E.M. AMÉLIA BITENCOURT"]
+    },
+    "Pracuúba": {
+        "BREU": ["E.M. PROF.ª EVANDRO MARTINS"],
+        "CENTRO": ["E.M. AUGUSTO ROCHA", "E.M. MANOEL HURBAND"],
+        "CUJUBIM": ["E.E. PEDRO MACIEL", "E.M. MARIA ENLLZA"],
+        "FLEXAL": ["E.E. PEDRO TEIXEIRA", "E.E. SÃO MIGUEL DO FLEXAL"],
+        "PERNAMBUCO": ["E.E. JOÃO E. LOPES"]
+    },
+    "Santana": {
+        "ANAUERAPUCU": ["E.E. FRANCISCO O. FILHO"],
+        "CAFEZAL": ["E.M. ENSINO BÁSICO CAFEZAL"],
+        "CENTRO": ["E.E. SÃO JOÃO APÓSTOLO", "E.P.G. FRANCISCO W. LOBATO", "E.P.G. AMAZONAS", "E.P.G. AUGUSTO ANTUNES", "E.P.G. AFONSO ARINOS", "E.P.G. BARROSO TOSTES", "E.E. ALMIRANTE BARROSO", "CENTRO SOCIAL VITÓRIA RÉGIA"],
+        "COMERCIAL": ["E.M. Nª Sª DA CONCEIÇÃO"],
+        "CONCEIÇÃO DO MARUANUM": ["E.E. CONCEIÇÃO DO MARUANUM"],
+        "ELESBÃO": ["E.E. ALBERTO SANTOS DUMONT"],
+        "FONTE NOVA": ["E.E. JOSÉ DE ANCHIETA", "E.M. IFAP", "E.E. ANTONIO JANUARIO PEREIRA", "E.M. GENTILA ANSELMO NOBRE", "E.E. FONTE NOVA", "E.M. PADRE FÚLVIO GUILLIANO"],
+        "FORTALEZA": ["E.M. PIAUÍ", "E.E. IGARAPÉ DA FORTALEZA", "E.E. ANA DIAS DA COSTA"],
+        "HOSPITALIDADE": ["E.P.G. ELIZABETH PICANÇO"],
+        "I. DO LAGO": ["E.E. BELMIRO MACEDO MEDINA"],
+        "ILHA DE SANTANA": ["E.E. OSWALDO FERREIRA", "E.E. LENINDO ALVES"],
+        "MATÃO I": ["E.P.G MATÃO I"],
+        "MATÃO II": ["ANEXO ESCOLA SÃO JOSÉ"],
+        "MATÃO III": ["E.P.G. MATÃO III"],
+        "N. BRASÍLIA": ["CENTRO DE ATENDIMENTO A JUVENTUDE", "E.E. JOANIRA AMORA DEL", "E.P.G. JOSÉ RIBAMAR PESTAN"],
+        "N. UNIÃO": ["CRECHE MAURO CESAR"],
+        "NOVO HORIZONTE": ["E.E. MARIA C. D. TIBURCIO"],
+        "PARAÍSO": ["E.E. PROF.ª IZANETE V. SANTOS", "E.M. PADRE FULVIO GIULLIANO", "E.E. SÃO BENTO", "E.P.G. PADRE ANGELO BIRACHI", "E.E. SÃO PAULO APÓSTOLO", "E.M.B. PARAÍSO DA CIDADANIA"],
+        "PIRATIVA": ["E.E. FÓZ DO RIO PIRATIVA"],
+        "PROVEDOR I": ["E.M.E.F. MARIA LINAH DE SOUZA"],
+        "PROVEDOR II": ["E.E. DENISE VASCONCELOS"],
+        "REMÉDIOS II": ["E.E. PADRE SIMÃO CORRIDORI"],
+        "VILA AMAZONAS": ["E.M.E.F. MARIA IRANILDE"]
+    },
+    "Serra do Navio": {
+        "CENTRO": ["E.E. DR. HERMELINO HERBSTER GUSMÃO"],
+        "COMUNIDADE DO CACHAÇO": ["E.E. SETE DE SETEMBRO"],
+        "ÁGUA BRANCA": ["E.M. ÁLVARO MARQUES"]
+    },
+    "Tartarugalzinho": {
+        "ANDIROBA": ["E.M. ANDIROBA DO LAGO NOVO"],
+        "ASSENTAMENTO APOREMA": ["E.M. IGARAPÉ DO PEIXE"],
+        "ASSENTAMENTO JANARAY II": ["E.E. CHICO MENDES"],
+        "BOM JESUS FERNANDES": ["E.E. JUVENAL FARIAS"],
+        "BONITO DO APOREMA": ["E.E.BONÍTO DO APOREMA"],
+        "CEDRO": ["E.E. DARCY RIBEIRO"],
+        "CENTRO": ["E.E. REISALINA FERREIRA TOMA", "E.E. PROF.ª Mª JOSÉ DE NAZ", "E.E. LUCIANA RABELO LEITE", "E.M. ANALICE MACIEL"],
+        "ENTRE RIOS": ["E.E. ENTRE RIOS"],
+        "FAZ MODELO": ["E.E. JOÃO BRAZÃO DA SILVA"],
+        "GUANABARA DO ARAGUARI": ["E.E. GUANABARA DO ARAGUARI"],
+        "ITAUBAL": ["E.E. WASHINGTON LUÍS"],
+        "LAGO NOVO": ["E.E. MARIA LUCILA BRAZÃO"],
+        "LIVRAMENTO DO APOREMA": ["E.E. BASILLO PEREIRA DE SOUZA"],
+        "NAZARÉ DO APOREMA": ["E.E. NAZARÉ DO APOREMA"],
+        "NOVA VIDA": ["E.E. NOVA VIDA"],
+        "PLANALTINA": ["E.E. ALZIRA DE LIMA SANTOS"],
+        "PONTA DO SOCORRO": ["E.E. SÃO SEBASTIÃO"],
+        "SÃO TOMÉ DO APOREMA": ["E.E. SÃO TOMÉ DO APOREMA"],
+        "UAPEZAL": ["E.E. UAPEZAL"]
+    },
+    "Vitória do Jari": {
+        "CENTRO": ["E.M. ATERRO DO MURIACÁ", "E.P.G. SÃO JOÃO DO CAJARI", "CENTRO C. ILHAS ARUÃS"],
+        "CIDADE LIVRE": ["E.M. FRANCISCA DE FREITAS"],
+        "COMUNIDADE DE TAPEREIRA": ["ESCOLA"],
+        "MINA": ["E.E. TEOTÔNIO BRANDÃO", "E.M. ÁLVARO MARQUES"],
+        "PRAINHA": ["E.M. FELINTO BATISTA", "E.E. MUNGUBA DO JARI"],
+        "SANTA CLARA": ["E.M. BENEDITO PENEIVA"],
+        "SÃO JOÃO DO CAJARI": ["E.E. JARILÂNDIA"]
+    }
+};
 
+        const selectMunicipio = document.getElementById("input-municipio");
         const selectBairro = document.getElementById("input-bairro");
         const selectEscola = document.getElementById("input-escola");
 
-        Object.keys(mapaDados).sort().forEach(bairro => {
+        Object.keys(mapaMunicipios).sort().forEach(municipio => {
             const opt = document.createElement("option");
-            opt.value = bairro;
-            opt.textContent = bairro;
-            selectBairro.appendChild(opt);
+            opt.value = municipio;
+            opt.textContent = municipio;
+            selectMunicipio.appendChild(opt);
+        });
+
+        selectMunicipio.addEventListener("change", () => {
+            const municipio = selectMunicipio.value;
+            selectBairro.innerHTML = '<option value="">Selecione um bairro...</option>';
+            selectEscola.innerHTML = '<option value="">Selecione uma escola...</option>';
+            if (municipio && mapaMunicipios[municipio]) {
+                Object.keys(mapaMunicipios[municipio]).sort().forEach(bairro => {
+                    const opt = document.createElement("option");
+                    opt.value = bairro;
+                    opt.textContent = bairro;
+                    selectBairro.appendChild(opt);
+                });
+            }
         });
 
         selectBairro.addEventListener("change", () => {
+            const municipio = selectMunicipio.value;
             const bairro = selectBairro.value;
             selectEscola.innerHTML = '<option value="">Selecione uma escola...</option>';
-            if (bairro && mapaDados[bairro]) {
-                mapaDados[bairro].forEach(escola => {
+            if (municipio && bairro && mapaMunicipios[municipio] && mapaMunicipios[municipio][bairro]) {
+                mapaMunicipios[municipio][bairro].forEach(nomeEscola => {
                     const opt = document.createElement("option");
-                    opt.value = escola.nome;
-                    opt.textContent = escola.nome;
+                    opt.value = nomeEscola;
+                    opt.textContent = nomeEscola;
                     selectEscola.appendChild(opt);
                 });
             }
@@ -148,6 +542,7 @@
             btn.textContent = "Enviando...";
             
             const dados = {
+                municipio: selectMunicipio.value,
                 bairro: selectBairro.value,
                 escola: selectEscola.value,
                 lider: document.getElementById("input-lider").value.trim() || '---',
@@ -169,8 +564,12 @@
                 alert("Cadastrado com sucesso!"); 
                 listaNomes.push(nomeDigitado); 
                 document.getElementById("form-cadastro").reset();
+                selectBairro.innerHTML = '<option value="">Selecione um bairro...</option>';
                 selectEscola.innerHTML = '<option value="">Selecione uma escola...</option>';
+                document.getElementById("input-lider").value = document.getElementById("lider-logado-nome").textContent;
                 btn.textContent = "Enviar Cadastro";
+                mostrarLista();
+                carregarMeusCadastros(document.getElementById("lider-logado-nome").textContent);
             }
         });
 
