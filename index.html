@@ -1,114 +1,248 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="h-full bg-slate-950">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Novo Cadastro</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
-    <style>
-        :root {
-            --azul-marinho-escuro: #050d27;
-            --azul-marinho-medio: #0432b3;
-            --azul-botao: #0441c5;
-            --cinza-fundo-input: #050d27;
-            --texto-principal: #ffffff;
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f6fe',
+                            100: '#ddeafc',
+                            200: '#c2dbf9',
+                            300: '#98c4f5',
+                            400: '#67a4ef',
+                            500: '#4380e6',
+                            600: '#2d62db',
+                            700: '#234ec8',
+                            800: '#2240a3',
+                            900: '#203981',
+                            950: '#17244f',
+                        }
+                    }
+                }
+            }
         }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Font Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
+        ::-webkit-scrollbar-thumb { background: rgba(51, 65, 85, 0.8); border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(71, 85, 105, 1); }
     </style>
 </head>
-<body class="bg-[var(--azul-marinho-escuro)] p-4 md:p-10 text-[var(--texto-principal)] font-sans">
+<body class="min-h-full bg-slate-950 text-slate-100 antialiased flex flex-col justify-center selection:bg-brand-500 selection:text-white">
 
-    <div id="tela-login" class="max-w-sm mx-auto bg-[var(--azul-marinho-medio)] p-6 rounded-xl border border-slate-800 shadow-xl mt-20">
-        <h2 class="text-2xl font-bold text-white mb-1 text-center">Acessar Painel</h2>
-        <p class="text-xs text-slate-300 mb-6 text-center"></p>
-
-        <form id="form-login" class="space-y-4">
-            <div>
-                <label class="block text-[12px] text-white uppercase font-bold mb-1">Telefone</label>
-                <input type="text" id="login-telefone" placeholder="(96) 99999-9999" maxlength="15" required autocomplete="off" class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
-            </div>
-            <div>
-                <label class="block text-[12px] text-white uppercase font-bold mb-1">Informe seu PIN de 4 dígitos para entrar</label>
-                <input type="password" id="login-senha" placeholder="0000" maxlength="4" inputmode="numeric" required autocomplete="off" class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
-            </div>
-            <p id="login-erro" class="text-red-400 text-xs hidden"></p>
-            <button type="submit" id="btn-login" class="w-full bg-[var(--azul-botao)] hover:bg-blue-500 text-white font-bold py-3 rounded-lg transition shadow-lg">
-                Entrar
-            </button>
-        </form>
+    <!-- Glowing background decor -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="absolute -top-40 -left-40 w-96 h-96 bg-brand-600/20 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-40 -right-40 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl"></div>
     </div>
 
-    <div id="tela-cadastro" class="max-w-lg mx-auto bg-[var(--azul-marinho-medio)] p-6 rounded-xl border border-slate-800 shadow-xl hidden">
-        <div class="flex justify-between items-center mb-6 border-b border-slate-800 pb-3">
-            <h2 class="text-2xl font-bold text-white">Painel do Usuário</h2>
-            <div class="text-right">
-                <p class="text-xs text-slate-300">Logado como</p>
-                <p id="lider-logado-nome" class="text-sm font-bold text-white mb-2"></p>
-                <button id="btn-sair" type="button" class="inline-flex items-center gap-1.5 text-xs font-bold text-red-300 border border-red-400/40 bg-red-500/10 hover:bg-red-500/20 hover:text-red-200 py-1.5 px-3 rounded-lg transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 001 1h6a1 1 0 100-2H4V6h5a1 1 0 100-2H3zm10.293 3.293a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L14.586 11H7a1 1 0 110-2h7.586l-1.293-1.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
-                    Sair
-                </button>
+    <!-- MAIN CONTAINER -->
+    <main class="relative z-10 w-full max-w-xl mx-auto p-4 sm:p-6 my-auto">
+
+        <!-- TELA DE LOGIN CONTAINER -->
+        <div id="tela-login" class="bg-blue-950/90 backdrop-blur-xl border border-blue-900/60 rounded-2xl shadow-2xl p-6 sm:p-8 transition-all">
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-brand-600/10 border border-brand-500/20 text-brand-400 mb-4 shadow-inner">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-bold text-white tracking-tight">Acessar Painel</h2>
+                <p class="text-xs text-slate-400 mt-1">Informe suas credenciais para gerenciar cadastros</p>
             </div>
-        </div>
 
-        <!-- LISTA DE CADASTROS DO LÍDER -->
-        <div id="painel-lista">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-sm font-bold text-white">Meus Cadastros (<span id="contador-cadastros">0</span>)</h3>
-                <button id="btn-abrir-form" type="button" class="bg-[var(--azul-botao)] hover:bg-blue-500 text-white text-sm font-bold py-2 px-4 rounded-lg transition shadow-lg">
-                    + Cadastrar
-                </button>
-            </div>
-            <div id="lista-meus-cadastros" class="space-y-2 max-h-[65vh] overflow-y-auto"></div>
-        </div>
-
-        <!-- FORMULÁRIO DE NOVO CADASTRO -->
-        <div id="painel-form" class="hidden">
-            <button id="btn-voltar-lista" type="button" class="inline-flex items-center gap-1.5 text-sm font-bold text-white border border-slate-700 bg-slate-900/60 hover:bg-slate-900 py-2 px-4 rounded-lg transition mb-4 shadow">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 111.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"/></svg>
-                Voltar para a lista
-            </button>
-
-            <form id="form-cadastro" class="space-y-4">
-                <select id="input-municipio" required class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm text-white focus:border-blue-500 outline-none">
-                    <option value="">Selecione um município...</option>
-                </select>
-
-                <div class="grid grid-cols-2 gap-4">
-                    <select id="input-bairro" required class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm text-white focus:border-blue-500 outline-none">
-                        <option value="">Selecione um bairro...</option>
-                    </select>
-                    <select id="input-escola" required class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm text-white focus:border-blue-500 outline-none">
-                        <option value="">Selecione uma escola...</option>
-                    </select>
+            <form id="form-login" class="space-y-5">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">Telefone</label>
+                    <div class="relative">
+                        <input type="text" id="login-telefone" placeholder="(96) 99999-9999" maxlength="15" required autocomplete="off" class="w-full bg-slate-950/70 border border-slate-800 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-500 outline-none transition duration-200">
+                    </div>
                 </div>
 
-                <input type="text" id="input-lider" placeholder="Líder" readonly class="w-full bg-slate-900 border border-slate-800 p-2.5 rounded-lg text-sm opacity-80 cursor-not-allowed">
-                <input type="text" id="input-nome" placeholder="Nome Completo" required class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
-                <input type="text" id="input-mae" placeholder="Nome da Mãe" required class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
-                
-                <label class="block text-[12px] text-white uppercase font-bold">Data de Nascimento</label>
-                <input type="text" id="input-nascimento" placeholder="DD/MM/AAAA" maxlength="10" required class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
-
-                <div class="grid grid-cols-2 gap-4">
-                    <input type="text" id="input-whatsapp" placeholder="(96) 99999-9999" maxlength="15" required class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
-                    <select id="input-transporte" class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
-                        <option value="Não">Sem Transporte</option>
-                        <option value="Carro">Carro</option>
-                        <option value="Moto">Moto</option>
-                    </select>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">PIN de Acesso (4 dígitos)</label>
+                    <input type="password" id="login-senha" placeholder="••••" maxlength="4" inputmode="numeric" required autocomplete="off" class="w-full bg-slate-950/70 border border-slate-800 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-500 outline-none tracking-widest transition duration-200">
                 </div>
 
-                <input type="text" id="input-instagram" placeholder="Instagram (@usuario)" class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
-                <input type="text" id="input-facebook" placeholder="Facebook (nome ou link)" class="w-full bg-[var(--cinza-fundo-input)] border border-slate-800 p-2.5 rounded-lg text-sm">
+                <div id="login-erro" class="p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-xs flex items-center gap-2 hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span id="login-erro-texto"></span>
+                </div>
 
-                <button type="submit" id="btn-submit" class="w-full bg-[var(--azul-botao)] hover:bg-blue-500 text-white font-bold py-3 rounded-lg transition shadow-lg mt-4">
-                    Enviar Cadastro
+                <button type="submit" id="btn-login" class="w-full bg-brand-600 hover:bg-brand-500 active:bg-brand-700 text-white font-semibold py-3 px-4 rounded-xl transition duration-200 shadow-lg shadow-brand-600/25 flex items-center justify-center gap-2">
+                    <span>Entrar no Sistema</span>
                 </button>
             </form>
         </div>
-    </div>
+
+        <!-- TELA DE PAINEL DO USUÁRIO CONTAINER -->
+        <div id="tela-cadastro" class="bg-blue-950/90 backdrop-blur-xl border border-blue-900/60 rounded-2xl shadow-2xl overflow-hidden hidden transition-all">
+            
+            <!-- HEADER / PERFIL -->
+            <div class="p-5 sm:p-6 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-brand-600/20 border border-brand-500/30 text-brand-400 flex items-center justify-center font-bold text-sm">
+                        <span id="avatar-iniciais">L</span>
+                    </div>
+                    <div>
+                        <p class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Líder Conectado</p>
+                        <h3 id="lider-logado-nome" class="text-base font-bold text-white tracking-tight leading-tight">--</h3>
+                    </div>
+                </div>
+
+                <button id="btn-sair" type="button" class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-400 hover:text-red-400 border border-slate-800 bg-slate-950/50 hover:bg-red-500/10 hover:border-red-500/30 px-3 py-2 rounded-xl transition duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    Sair
+                </button>
+            </div>
+
+            <div class="p-5 sm:p-6">
+                <!-- LISTA DE CADASTROS DO LÍDER -->
+                <div id="painel-lista">
+                    <div class="flex items-center justify-between gap-4 mb-5">
+                        <div>
+                            <h2 class="text-lg font-bold text-white">Meus Cadastros</h2>
+                            <p class="text-xs text-slate-400">Total registrado: <span id="contador-cadastros" class="font-bold text-brand-400">0</span></p>
+                        </div>
+                        <button id="btn-abrir-form" type="button" class="bg-brand-600 hover:bg-brand-500 text-white text-xs font-semibold py-2.5 px-4 rounded-xl transition shadow-lg shadow-brand-600/20 inline-flex items-center gap-1.5 shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                            </svg>
+                            Novo Cadastro
+                        </button>
+                    </div>
+
+                    <div class="relative mb-4">
+                        <input type="text" id="busca-cadastro" placeholder="Pesquisar por nome..." autocomplete="off" class="w-full bg-slate-950/60 border border-slate-800 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 py-2.5 pl-10 pr-4 rounded-xl text-sm text-slate-100 placeholder-slate-500 outline-none transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+
+                    <div id="lista-meus-cadastros" class="space-y-2.5 max-h-[55vh] overflow-y-auto pr-1"></div>
+                </div>
+
+                <!-- FORMULÁRIO DE NOVO CADASTRO -->
+                <div id="painel-form" class="hidden">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-5">
+                        <h3 class="text-base font-bold text-white">Cadastrar</h3>
+                        <button id="btn-voltar-lista" type="button" class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-400 hover:text-white bg-slate-950/50 hover:bg-slate-800 border border-slate-800 px-3 py-1.5 rounded-xl transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                            </svg>
+                            Voltar
+                        </button>
+                    </div>
+
+                    <form id="form-cadastro" class="space-y-4">
+                        <!-- Busca e seleção de Escola -->
+                        <div class="space-y-1">
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">Escola / Local de Votação</label>
+                            <select id="input-escola" class="hidden">
+                                <option value="">Selecione uma escola...</option>
+                            </select>
+                            <div class="relative">
+                                <input type="text" id="input-escola-busca" placeholder="Digite para pesquisar a escola..." autocomplete="off" required class="w-full bg-slate-950/70 border border-slate-800 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 p-2.5 rounded-xl text-sm text-slate-100 placeholder-slate-500 outline-none transition">
+                                <div id="escola-sugestoes" class="hidden absolute z-30 mt-1 w-full max-h-52 overflow-y-auto bg-slate-900 border border-slate-700 rounded-xl shadow-2xl divide-y divide-slate-800/50"></div>
+                            </div>
+                        </div>
+
+                        <!-- Município e Bairro -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div class="space-y-1">
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">Município</label>
+                                <select id="input-municipio" required class="w-full bg-slate-950/70 border border-slate-800 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 p-2.5 rounded-xl text-sm text-slate-100 outline-none transition">
+                                    <option value="">Selecione...</option>
+                                </select>
+                            </div>
+                            <div class="space-y-1">
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">Bairro</label>
+                                <select id="input-bairro" required class="w-full bg-slate-950/70 border border-slate-800 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 p-2.5 rounded-xl text-sm text-slate-100 outline-none transition">
+                                    <option value="">Selecione...</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Dados Pessoais -->
+                        <div class="space-y-3 pt-2 border-t border-slate-800/60">
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Líder Responsável</label>
+                                <input type="text" id="input-lider" readonly class="w-full bg-slate-950/30 border border-slate-800/80 p-2.5 rounded-xl text-sm text-slate-400 opacity-80 cursor-not-allowed">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Nome Completo</label>
+                                <input type="text" id="input-nome" placeholder="Ex: João da Silva" required class="w-full bg-slate-950/70 border border-slate-800 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 p-2.5 rounded-xl text-sm text-slate-100 outline-none transition">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Nome da Mãe</label>
+                                <input type="text" id="input-mae" placeholder="Ex: Maria da Silva" required class="w-full bg-slate-950/70 border border-slate-800 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 p-2.5 rounded-xl text-sm text-slate-100 outline-none transition">
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Nascimento</label>
+                                    <input type="text" id="input-nascimento" placeholder="DD/MM/AAAA" maxlength="10" required class="w-full bg-slate-950/70 border border-slate-800 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 p-2.5 rounded-xl text-sm text-slate-100 outline-none transition">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">WhatsApp</label>
+                                    <input type="text" id="input-whatsapp" placeholder="(96) 99999-9999" maxlength="15" required class="w-full bg-slate-950/70 border border-slate-800 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 p-2.5 rounded-xl text-sm text-slate-100 outline-none transition">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Transporte?</label>
+                                <select id="input-transporte" class="w-full bg-slate-950/70 border border-slate-800 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 p-2.5 rounded-xl text-sm text-slate-100 outline-none transition">
+                                    <option value="Não">Sem Transporte</option>
+                                    <option value="Carro">Carro</option>
+                                    <option value="Moto">Moto</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Redes Sociais -->
+                        <div class="space-y-3 pt-2 border-t border-slate-800/60">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Instagram</label>
+                                    <input type="text" id="input-instagram" placeholder="@usuario" class="w-full bg-slate-950/70 border border-slate-800 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 p-2.5 rounded-xl text-sm text-slate-100 outline-none transition">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Facebook</label>
+                                    <input type="text" id="input-facebook" placeholder="Nome ou perfil" class="w-full bg-slate-950/70 border border-slate-800 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 p-2.5 rounded-xl text-sm text-slate-100 outline-none transition">
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" id="btn-submit" class="w-full bg-brand-600 hover:bg-brand-500 active:bg-brand-700 text-white font-semibold py-3 px-4 rounded-xl transition duration-200 shadow-lg shadow-brand-600/25 mt-6">
+                            Finalizar Cadastro
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </main>
 
     <script>
         const supabaseClient = supabase.createClient("https://giwnfttgradamcdbmceg.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdpd25mdHRncmFkYW1jZGJtY2VnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI0MTAzMTcsImV4cCI6MjA5Nzk4NjMxN30.Du5QNQ4K_ImVEdOhmJPR8SIktwsxKn5vpvp53tMH3Rs");
@@ -128,18 +262,80 @@
         }
 
         function normalizarTexto(str) {
-            return String(str || '').trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, "");
+            return String(str || '').trim().toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/\s+/g, "");
         }
+
+        let meusCadastrosAtuais = [];
+        let cadastroSelecionadoId = null;
+
+        function renderizarListaCadastros(lista) {
+            const listaEl = document.getElementById("lista-meus-cadastros");
+
+            if (lista.length === 0) {
+                listaEl.innerHTML = `
+                    <div class="text-center py-10 px-4 border border-dashed border-slate-800 rounded-xl bg-slate-950/30">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-slate-600 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                        </svg>
+                        <p class="text-xs text-slate-400">Nenhum cadastro encontrado.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            listaEl.innerHTML = lista.map((item, idx) => `
+                <div data-idx="${idx}" class="cadastro-card cursor-pointer bg-slate-950/50 hover:bg-slate-950 border ${cadastroSelecionadoId === (item.id ?? idx) ? 'border-brand-500/80 bg-brand-950/20' : 'border-slate-800 hover:border-slate-700'} rounded-xl p-3.5 transition duration-150">
+                    <div class="flex items-start justify-between gap-2">
+                        <p class="text-sm font-semibold text-white tracking-tight">${item.nome || 'N/A'}</p>
+                        ${item.transporte && item.transporte !== 'Não' ? `<span class="px-2 py-0.5 text-[10px] font-medium bg-brand-500/10 text-brand-300 border border-brand-500/20 rounded-md">Transp: ${item.transporte}</span>` : ''}
+                    </div>
+                    <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-slate-400">
+                        <span>${item.escola || 'Escola não informada'}</span>
+                        ${item.bairro ? `<span class="text-slate-600">•</span><span>${item.bairro}</span>` : ''}
+                    </div>
+                    <div class="mt-2 text-[11px] text-slate-500 font-mono">
+                        ${item.whatsapp || 'Sem Whats'}
+                    </div>
+                </div>
+            `).join('');
+
+            listaEl.querySelectorAll('.cadastro-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const item = lista[Number(card.dataset.idx)];
+                    const idAtual = item.id ?? Number(card.dataset.idx);
+                    cadastroSelecionadoId = (cadastroSelecionadoId === idAtual) ? null : idAtual;
+                    renderizarListaCadastros(lista);
+                });
+            });
+        }
+
+        function filtrarCadastros(termo) {
+            const termoNormalizado = normalizarTexto(termo);
+            if (!termoNormalizado) return meusCadastrosAtuais;
+            return meusCadastrosAtuais.filter(item => normalizarTexto(item.nome).includes(termoNormalizado));
+        }
+
+        document.getElementById("busca-cadastro").addEventListener("input", (e) => {
+            renderizarListaCadastros(filtrarCadastros(e.target.value));
+        });
 
         async function carregarMeusCadastros(nomeLider) {
             const listaEl = document.getElementById("lista-meus-cadastros");
             const contadorEl = document.getElementById("contador-cadastros");
-            listaEl.innerHTML = `<p class="text-xs text-slate-300 text-center py-4">Carregando...</p>`;
+            const buscaEl = document.getElementById("busca-cadastro");
+            buscaEl.value = "";
+            cadastroSelecionadoId = null;
+            listaEl.innerHTML = `
+                <div class="text-center py-8">
+                    <div class="inline-block animate-spin rounded-full h-5 w-5 border-2 border-brand-500 border-t-transparent"></div>
+                    <p class="text-xs text-slate-400 mt-2">Carregando cadastros...</p>
+                </div>
+            `;
 
             const { data, error } = await supabaseClient.from('cadastros_votos').select('*');
 
             if (error) {
-                listaEl.innerHTML = `<p class="text-xs text-red-400 text-center py-4">Erro ao carregar: ${error.message}</p>`;
+                listaEl.innerHTML = `<p class="text-xs text-red-400 text-center py-4 bg-red-500/10 rounded-xl border border-red-500/20">Erro ao carregar: ${error.message}</p>`;
                 return;
             }
 
@@ -147,19 +343,18 @@
             contadorEl.textContent = meus.length;
 
             if (meus.length === 0) {
-                console.log('[Meus Cadastros] Nenhum registro bateu com o líder "' + nomeLider + '". Nomes de líder existentes no banco:',
-                    [...new Set((data || []).map(i => i.lider).filter(Boolean))]);
-                listaEl.innerHTML = `<p class="text-xs text-slate-300 text-center py-6">Você ainda não cadastrou ninguém. Clique em "+ Cadastrar" para começar.</p>`;
+                meusCadastrosAtuais = [];
+                listaEl.innerHTML = `
+                    <div class="text-center py-10 px-4 border border-dashed border-slate-800 rounded-xl bg-slate-950/30">
+                        <p class="text-xs text-slate-400 mb-3">Você ainda não registrou nenhum eleitor.</p>
+                        <button onclick="mostrarForm()" class="text-xs font-semibold text-brand-400 hover:text-brand-300 underline underline-offset-4">Clique aqui para começar</button>
+                    </div>
+                `;
                 return;
             }
 
-            listaEl.innerHTML = meus.slice().reverse().map(item => `
-                <div class="bg-[var(--cinza-fundo-input)] border border-slate-800 rounded-lg p-3">
-                    <p class="text-sm font-bold text-white">${item.nome || 'N/A'}</p>
-                    <p class="text-xs text-slate-300">${item.escola || '---'} ${item.bairro ? '· ' + item.bairro : ''}</p>
-                    <p class="text-xs text-slate-400">${item.whatsapp || '---'}</p>
-                </div>
-            `).join('');
+            meusCadastrosAtuais = meus.slice().reverse();
+            renderizarListaCadastros(meusCadastrosAtuais);
         }
 
         /* ---- Login do líder ---- */
@@ -167,15 +362,17 @@
         const telaCadastro = document.getElementById("tela-cadastro");
         const formLogin = document.getElementById("form-login");
         const loginErro = document.getElementById("login-erro");
+        const loginErroTexto = document.getElementById("login-erro-texto");
 
         function mostrarErroLogin(msg) {
-            loginErro.textContent = msg;
+            loginErroTexto.textContent = msg;
             loginErro.classList.remove("hidden");
         }
 
         function entrarComoLider(nome) {
             localStorage.setItem("liderLogadoNome", nome);
             document.getElementById("lider-logado-nome").textContent = nome;
+            document.getElementById("avatar-iniciais").textContent = nome.charAt(0).toUpperCase();
             document.getElementById("input-lider").value = nome;
             telaLogin.classList.add("hidden");
             telaCadastro.classList.remove("hidden");
@@ -183,7 +380,7 @@
             carregarMeusCadastros(nome);
         }
 
-        // Mantém login entre visitas (o líder não precisa logar toda hora)
+        // Mantém login entre visitas
         const liderSalvo = localStorage.getItem("liderLogadoNome");
         if (liderSalvo) entrarComoLider(liderSalvo);
 
@@ -206,7 +403,10 @@
             if (telefoneDigitado.length < 10) { mostrarErroLogin("Digite o telefone completo, com DDD."); return; }
             if (senhaDigitada.length !== 4) { mostrarErroLogin("A senha são os 4 últimos dígitos do seu telefone."); return; }
 
-            btnLogin.textContent = "Entrando...";
+            btnLogin.innerHTML = `
+                <div class="inline-block animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                <span>Verificando...</span>
+            `;
             btnLogin.disabled = true;
 
             const { data, error } = await supabaseClient
@@ -215,7 +415,7 @@
                 .eq('telefone', telefoneDigitado)
                 .maybeSingle();
 
-            btnLogin.textContent = "Entrar";
+            btnLogin.innerHTML = `<span>Entrar no Sistema</span>`;
             btnLogin.disabled = false;
 
             if (error) {
@@ -223,7 +423,7 @@
                 return;
             }
             if (!data) {
-                mostrarErroLogin("Telefone não encontrado. Fale com o administrador do sistema.");
+                mostrarErroLogin("Telefone não encontrado. Fale com o administrador.");
                 return;
             }
             if (data.telefone.slice(-4) !== senhaDigitada) {
@@ -262,15 +462,16 @@
 
         const mapaMunicipios = {
     "Macapá": {
-        "BEIROL": ["ZOLITO D. JESUS NUNES", "PROF. ROBERTO - CENAP"],
+        "BEIROL": ["ZOLITO D. JESUS NUNES", "PROF. ROBERTO - CENAP", "SESC" ],
         "BONÉ AZUL": ["ONEIDE LIMA"],
         "BRASIL NOVO": ["ESCOLA BRASIL NOVO", "MARIA CAVALCANTE", "MARIA MÃE DE DEUS", "LÚCIA NEVES D."],
         "BURITIS": ["ANTONIO FERREIRA"],
         "BURITIZAL": ["EUNICE PICANÇO", "CARMELITA DO CARMO", "SEBASTIANA LENIR", "MÁRIO QUIRINO", "COELHO NETO", "CECÍLIA PINTO", "RORAIMA", "ARACY MONT'ALVERNE", "CEPA - CENTRO E. DO AP", "GONÇALVES DIAS"],
         "CABRALZINHO": ["SEST/SENAT", "MARIA DO SOCORRO A."],
-        "CENTRO": ["GRAZIELA REIS", "GABRIEL DE ALMEIDA C.", "PROFESSORA GUITA", "ANTÔNIO CORDEIRO P.", "GUANABARA", "UEAP"],
+        "CENTRO": ["GRAZIELA REIS", "GABRIEL DE ALMEIDA C.", "PROFESSORA GUITA", "ANTÔNIO CORDEIRO P.", "GUANABARA", "UEAP", "COLEGIO AMAPAENSE"],
         "CONGÓS": ["IRINEU DA GAMA PAZ", "NELITA ROCHA", "BENIGNA MOREIRA"],
         "CORAÇÃO": ["E.E.E.F. GOIÁS"],
+        "CURIAU": ["EPG JOSÉ BONIFÁCIO"],
         "CUBA DE ASFALTO": ["REINALDO DAMASCENO"],
         "FAZENDINHA": ["JOSÉ DO PATROCÍNIO", "CAETANO DIAS TOMÁS", "PROFª JACINTA MARIA", "CACILDA FERREIRA V.", "IVANHOÉ GONÇALVES", "MARIA ANGÉLICA P."],
         "IGARAPÉ DA FORTALEZA": ["PROFª MARGARIDA R."],
@@ -298,7 +499,13 @@
         "SÃO LÁZARO": ["ODETE ALMEIDA", "RUTH BEZERRA", "ESTHER DA SILVA VIR.", "ESCOLA SÃO LÁZARO"],
         "TREM": ["SANTINA RIOLI", "AMAPÁ", "ALEXANDRE V. TAVARES", "HILDEMAR MAIA", "JOSÉ FIRMO(CASTELO BRANCO)"],
         "UNIVERSIDADE": ["NEUZONA", "UNIFAP"],
-        "ZERÃO": ["ANA MARIA DA SILVA", "ANTÔNIO MESSIAS", "NANCI NINA COSTA", "ANTÔNIO CASTRO"]
+        "ZERÃO": ["ANA MARIA DA SILVA", "ANTÔNIO MESSIAS", "NANCI NINA COSTA", "ANTÔNIO CASTRO", "E. MARIA BERNADETE"],
+
+        "REGIÃO RURAL ESTRADA": ["E.P.G. TESSALÔNICA","E.E. GENERAL CARROMBERT PEREIRA DA COSTA","E.E. NOSSA SENHORA DE NAZARÉ","E.E. ANTÔNIO FIGUEIREDO DA SILVA","E.E.E.F. ARURI","E.P.G. CARAPANATUBA","E.E. JOÃO MACIEL","E.E. PONTA GROSSA DO PIRIRIM","E.E. SÃO SEBASTIÃO DA BOA VISTA","E.E.E.F. HELENISE WALMIRA","E.M.E.F. CAMPINA GRANDE","E.P.G. RAIMUNDO PEREIRA","E.E. SÃO PEDRO DO CARANÃ","E.E. RAIMUNDO PEREIRA","E.M. JOÃO ROLINDO DO CARMO"],
+        "REGIÃO DO BAILIQUE": ["E.P.G. MARIA JOSÉ CAMPELO DA SILVA","E.E. BENTO TOLOSA","E.E. FRANCO GRANDE","E.E. PROFª NAIR CORDEIRO MARQUES","E.E. ROSA DE SHARON","E.E. CLÁUDIO DOS SANTOS BARBOSA (ESCOLA BOSQUE)","E.E. IGARAPÉ DA TERRA GRANDE","E.E. ITAMATATUBA","E.E. MANOEL PEREIRA HERCULANO"],
+        "REGIÃO DO PACUÍ": ["E.P.G. SÃO JOAQUIM DO PACUÍ","E.P.G. JULIO GONÇALVES DA COSTA","E.M.P.G. IRIDIO ROCHA","E.P.G. SÃO TOMÉ DO PACUÍ","E.E. OLENDINA FERREIRA","E.P.G. SEBASTIÃO CORDEIRO SENA","E.M. BENEDITA T. AVARES","E.E. ANDRÉ NEVES","E.E. JOSÉ OLIVEIRA COELHO"],
+        "REGIÃO DA PEDREIRA": ["E.P.G. DANIEL DE CARVALHO","E.E. ANTONIO BRAULIO DE SOUSA","E.E. NAZARÉ DA PEDREIRA","E.E. SÃO RAIMUNDO DO PARAÍSO","E.P.G. PEDRO ALCÂNTARA","ESCOLA QUILOMBOLA NESTOR BARBOSA","E.P.G. TEIXEIRA DE FREITAS", "E.M.E.F. VELHO CHICO", "E.E. JOAQUIM MANOEL DE JESUS PICANÇO"
+    ],
     },
     "Amapá": {
         "BOM JARDIM": ["E.M. FRANCISCO ALVES"],
@@ -357,6 +564,7 @@
         "MURIACÁ": ["E.M. CONCEIÇÃO DO MURIACÁ"],
         "NOVA ESPERANÇA": ["E.M. ZÉLIA CONCEIÇÃO"],
         "SAGRADO CORAÇÃO": ["E.P.G. JOSÉ RIBAMAR"],
+        "URBANA": ["CENTRO MUNICIPAL DE ENSINO FUNDAMENTAL (CMEF)"],
         "VILA DA PADARIA": ["E.E. PADARIA"],
         "VILA ÁGUA BRANCA": ["E.P.G. ÁGUA BRANCA DO CAJARI"]
     },
@@ -412,7 +620,7 @@
         "CAMPO VERDE": ["E.E. CAMPO VERDE"],
         "CENTRO": ["E.E. PROF.ª Mª C. BOTELHO", "E.M. ACRE"],
         "COMUNIDADE KM 142": ["E.M. JOANA Mª DA SILVA"],
-        "CUPIXI": ["E.M. CUPIXI"],
+        "CUPIXI": ["E.M. CUPIXI", "E. FLORENÇA TORRES DE ARAUJO"],
         "GARIMPO VILA NOVA": ["E.E. SANTA MARIA"],
         "MATAPI": ["E.E. MATAPI II"],
         "MUNGUBA": ["E.M. ELILUCIA DE SOUZA"],
@@ -491,6 +699,8 @@
         const selectMunicipio = document.getElementById("input-municipio");
         const selectBairro = document.getElementById("input-bairro");
         const selectEscola = document.getElementById("input-escola");
+        const inputEscolaBusca = document.getElementById("input-escola-busca");
+        const escolaSugestoesEl = document.getElementById("escola-sugestoes");
 
         Object.keys(mapaMunicipios).sort().forEach(municipio => {
             const opt = document.createElement("option");
@@ -499,10 +709,18 @@
             selectMunicipio.appendChild(opt);
         });
 
-        selectMunicipio.addEventListener("change", () => {
-            const municipio = selectMunicipio.value;
-            selectBairro.innerHTML = '<option value="">Selecione um bairro...</option>';
-            selectEscola.innerHTML = '<option value="">Selecione uma escola...</option>';
+        // Lista plana de todas as escolas
+        const todasEscolas = [];
+        Object.keys(mapaMunicipios).forEach(municipio => {
+            Object.keys(mapaMunicipios[municipio]).forEach(bairro => {
+                mapaMunicipios[municipio][bairro].forEach(escola => {
+                    todasEscolas.push({ nome: escola, municipio, bairro });
+                });
+            });
+        });
+
+        function preencherBairros(municipio, bairroSelecionado) {
+            selectBairro.innerHTML = '<option value="">Selecione...</option>';
             if (municipio && mapaMunicipios[municipio]) {
                 Object.keys(mapaMunicipios[municipio]).sort().forEach(bairro => {
                     const opt = document.createElement("option");
@@ -511,12 +729,11 @@
                     selectBairro.appendChild(opt);
                 });
             }
-        });
+            if (bairroSelecionado) selectBairro.value = bairroSelecionado;
+        }
 
-        selectBairro.addEventListener("change", () => {
-            const municipio = selectMunicipio.value;
-            const bairro = selectBairro.value;
-            selectEscola.innerHTML = '<option value="">Selecione uma escola...</option>';
+        function preencherEscolas(municipio, bairro, escolaSelecionada) {
+            selectEscola.innerHTML = '<option value="">Selecione...</option>';
             if (municipio && bairro && mapaMunicipios[municipio] && mapaMunicipios[municipio][bairro]) {
                 mapaMunicipios[municipio][bairro].forEach(nomeEscola => {
                     const opt = document.createElement("option");
@@ -525,21 +742,98 @@
                     selectEscola.appendChild(opt);
                 });
             }
+            if (escolaSelecionada) selectEscola.value = escolaSelecionada;
+        }
+
+        selectMunicipio.addEventListener("change", () => {
+            preencherBairros(selectMunicipio.value);
+            preencherEscolas("", "");
+            inputEscolaBusca.value = "";
+        });
+
+        selectBairro.addEventListener("change", () => {
+            preencherEscolas(selectMunicipio.value, selectBairro.value);
+            inputEscolaBusca.value = "";
+        });
+
+        // Busca de escolas com sugestões
+        function esconderSugestoesEscola() {
+            escolaSugestoesEl.classList.add("hidden");
+            escolaSugestoesEl.innerHTML = "";
+        }
+
+        function selecionarEscola(item) {
+            inputEscolaBusca.value = item.nome;
+            selectMunicipio.value = item.municipio;
+            preencherBairros(item.municipio, item.bairro);
+            preencherEscolas(item.municipio, item.bairro, item.nome);
+            esconderSugestoesEscola();
+        }
+
+        inputEscolaBusca.addEventListener("input", () => {
+            const termo = inputEscolaBusca.value;
+            selectEscola.value = ""; 
+            const termoNormalizado = normalizarTexto(termo);
+
+            if (!termoNormalizado) { esconderSugestoesEscola(); return; }
+
+            const resultados = todasEscolas
+                .filter(item => normalizarTexto(item.nome).includes(termoNormalizado))
+                .slice(0, 30);
+
+            if (resultados.length === 0) {
+                escolaSugestoesEl.innerHTML = `<p class="text-xs text-slate-400 p-3 text-center">Nenhuma escola encontrada.</p>`;
+                escolaSugestoesEl.classList.remove("hidden");
+                return;
+            }
+
+            escolaSugestoesEl.innerHTML = resultados.map((item, idx) => `
+                <div data-idx="${idx}" class="escola-sugestao cursor-pointer p-3 hover:bg-slate-800 transition duration-100">
+                    <p class="text-xs font-semibold text-white">${item.nome}</p>
+                    <p class="text-[11px] text-slate-400 mt-0.5">${item.municipio} • ${item.bairro}</p>
+                </div>
+            `).join('');
+            escolaSugestoesEl.classList.remove("hidden");
+
+            escolaSugestoesEl.querySelectorAll(".escola-sugestao").forEach(el => {
+                el.addEventListener("click", () => selecionarEscola(resultados[Number(el.dataset.idx)]));
+            });
+        });
+
+        inputEscolaBusca.addEventListener("focus", () => {
+            if (inputEscolaBusca.value.trim()) inputEscolaBusca.dispatchEvent(new Event("input"));
+        });
+
+        document.addEventListener("click", (e) => {
+            if (!e.target.closest("#input-escola-busca") && !e.target.closest("#escola-sugestoes")) {
+                esconderSugestoesEscola();
+            }
         });
 
         document.getElementById("form-cadastro").addEventListener("submit", async (e) => {
             e.preventDefault();
-            
+
+            if (!selectEscola.value) {
+                alert("❌ Por favor, selecione uma escola válida na lista de sugestões.");
+                inputEscolaBusca.focus();
+                return;
+            }
+
             const inputNome = document.getElementById("input-nome");
             const nomeDigitado = inputNome.value.trim().toLowerCase();
             
             if (listaNomes.includes(nomeDigitado)) {
-                alert("❌ Atenção: O nome " + inputNome.value.trim() + " já está cadastrado!");
+                alert("❌ Atenção: O nome " + inputNome.value.trim() + " já está cadastrado no sistema!");
                 return;
             }
 
             const btn = document.getElementById("btn-submit");
-            btn.textContent = "Enviando...";
+            const textoOriginal = btn.textContent;
+            btn.innerHTML = `
+                <div class="inline-block animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                <span>Enviando dados...</span>
+            `;
+            btn.disabled = true;
             
             const dados = {
                 municipio: selectMunicipio.value,
@@ -557,23 +851,26 @@
             
             const { error } = await supabaseClient.from('cadastros_votos').insert([dados]);
             
+            btn.innerHTML = textoOriginal;
+            btn.disabled = false;
+
             if (error) {
-                alert("Erro: " + error.message);
-                btn.textContent = "Enviar Cadastro";
+                alert("Erro ao cadastrar: " + error.message);
             } else { 
-                alert("Cadastrado com sucesso!"); 
+                alert("✅ Cadastro realizado com sucesso!"); 
                 listaNomes.push(nomeDigitado); 
                 document.getElementById("form-cadastro").reset();
-                selectBairro.innerHTML = '<option value="">Selecione um bairro...</option>';
-                selectEscola.innerHTML = '<option value="">Selecione uma escola...</option>';
+                selectBairro.innerHTML = '<option value="">Selecione...</option>';
+                selectEscola.innerHTML = '<option value="">Selecione...</option>';
+                inputEscolaBusca.value = "";
+                esconderSugestoesEscola();
                 document.getElementById("input-lider").value = document.getElementById("lider-logado-nome").textContent;
-                btn.textContent = "Enviar Cadastro";
                 mostrarLista();
                 carregarMeusCadastros(document.getElementById("lider-logado-nome").textContent);
             }
         });
 
-        // Máscara de Data de Nascimento (DD/MM/AAAA)
+        // Máscaras de entrada
         document.getElementById('input-nascimento').addEventListener('input', (e) => {
             let v = e.target.value.replace(/\D/g, '');
             if (v.length > 8) v = v.slice(0, 8);
@@ -586,7 +883,6 @@
             }
         });
 
-        // Máscara de WhatsApp
         document.getElementById("input-whatsapp").addEventListener("input", function (e) {
             let v = e.target.value.replace(/\D/g, '');
             if (v.length > 11) v = v.slice(0, 11);
