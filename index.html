@@ -247,6 +247,35 @@
     <script>
         const supabaseClient = supabase.createClient("https://giwnfttgradamcdbmceg.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdpd25mdHRncmFkYW1jZGJtY2VnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI0MTAzMTcsImV4cCI6MjA5Nzk4NjMxN30.Du5QNQ4K_ImVEdOhmJPR8SIktwsxKn5vpvp53tMH3Rs");
 
+        // Busca TODOS os registros da tabela, paginando de 1000 em 1000
+        // (o Supabase/PostgREST limita cada consulta a 1000 linhas por padrão).
+        async function buscarTodosRegistros(nomeTabela) {
+            const TAMANHO_PAGINA = 1000;
+            let todos = [];
+            let pagina = 0;
+
+            while (true) {
+                const inicio = pagina * TAMANHO_PAGINA;
+                const fim = inicio + TAMANHO_PAGINA - 1;
+                const { data, error } = await supabaseClient
+                    .from(nomeTabela)
+                    .select('*')
+                    .range(inicio, fim);
+
+                if (error) {
+                    console.error(`Erro ao carregar '${nomeTabela}':`, error.message);
+                    break;
+                }
+
+                todos = todos.concat(data || []);
+
+                if (!data || data.length < TAMANHO_PAGINA) break; // última página
+                pagina++;
+            }
+
+            return todos;
+        }
+
         /* ---- Lista "Meus Cadastros" + alternância lista/formulário ---- */
         const painelLista = document.getElementById("painel-lista");
         const painelForm = document.getElementById("painel-form");
@@ -332,12 +361,7 @@
                 </div>
             `;
 
-            const { data, error } = await supabaseClient.from('cadastros_votos').select('*');
-
-            if (error) {
-                listaEl.innerHTML = `<p class="text-xs text-red-400 text-center py-4 bg-red-500/10 rounded-xl border border-red-500/20">Erro ao carregar: ${error.message}</p>`;
-                return;
-            }
+            const data = await buscarTodosRegistros('cadastros_votos');
 
             const meus = (data || []).filter(item => normalizarTexto(item.lider) === normalizarTexto(nomeLider));
             contadorEl.textContent = meus.length;
